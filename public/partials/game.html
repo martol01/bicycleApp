@@ -1,0 +1,14 @@
+<div>
+	MUSIC GAME
+	<a role="button" ng-click="play()">Play</a>
+	<a role="button" ng-click="stop()">Stop</a>
+	<a role="button" ng-click="getPlaylist()">Get Playlist</a>
+	<a role="button" ng-click="answer()">Answer</a>
+	<a role="button" ng-click="playSong()">Play</a>
+	<a role="button" ng-click="readUsers()">CHECK USERS</a>
+	<div>
+		<ul ng-repeat="answer in answers|orderBy:random">
+			<li> {{answer}}</li>
+		</ul>
+	</div>
+</div>
