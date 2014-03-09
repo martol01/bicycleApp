@@ -40,9 +40,6 @@ app.get('/api/v1/users', function(req,res){
 	});
 });
 app.put('/api/v1/users/:username', function(req,res){
-	var password=req.body.password;
-	var score=req.body.score;
-	var gamesPlayed=req.body.gamesPlayed;
 	UserModel.update({username: req.params.username},
 	 {$set:{score:req.body.score}}, function(err, user){
 	 	if(err)
@@ -50,7 +47,6 @@ app.put('/api/v1/users/:username', function(req,res){
 	 		console.log(err);
 	 		res.send(err);
 	 	}
-	 		console.log("HERER"+user);
 	 		res.json(user)	
 	 	
 	 });
