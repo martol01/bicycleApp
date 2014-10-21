@@ -1,14 +1,19 @@
 <!doctype html>
-<html ng-app="musicApp">
+<html ng-app="bicycleApp">
 	<head>
-		<script src="http://connect.soundcloud.com/sdk.js"></script>
+		<link rel="stylesheet" href="/stylesheets/bootstrap/dist/css/bootstrap.css" type="text/css" media="screen" title="no title" charset="utf-8">
+	</head>
+	<body>
+	  <div class="container-fluid" ng-controller="MainController">
+	    <div ng-view></div>
+	  </div>
 		<script src="/javascripts/angular.js"></script>
 		<script src="/javascripts/angular-route.js"></script>
 		<script src="/javascripts/routes.js"></script>
 		<script src="/javascripts/controllers.js"></script>
+		 <script type="text/javascript"
+      src="https://maps.googleapis.com/maps/api/js?key=API_KEY">
+    </script>
 		
-	</head>
-	<body>
-		<div ng-view></div>
 	</body>
 </html>
