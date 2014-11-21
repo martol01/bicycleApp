@@ -1,8 +1,11 @@
-body {
-  padding: 50px;
+body, html, #map-canvas{
+  
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-}
+  height:100%;
+  width: 100%;
+  position: absolute;
 
+}
 a {
   color: #00B7FF;
 }
