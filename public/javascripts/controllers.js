@@ -47,12 +47,36 @@ var myLatlng = new google.maps.LatLng(51.5248517, -0.1303936);
 
   $scope.bikeLayer = new google.maps.BicyclingLayer();
   $scope.bikeLayer.setMap($scope.map);
-   
+
+function showRoute(origin, destination){
+//
+	    var directionsService = new google.maps.DirectionsService();
+	    var directionsDisplay = new google.maps.DirectionsRenderer();
+  	    directionsDisplay.setMap($scope.map);
+        var start = origin;
+	    var end = destination;
+ 	    var request = {
+ 	      origin:start,
+ 	      destination:end,
+ 	      travelMode: google.maps.TravelMode.BICYCLING
+ 	    };
+ 	     directionsService.route(request, function(response, status) {
+ 	     if (status == google.maps.DirectionsStatus.OK) {
+ 	       directionsDisplay.setDirections(response);
+ 	     }
+ 	    });
+//
+
+} 
+
 function initialize() {
   
 	  var originText =(document.getElementById('originText')); //refer to the origin textbox
+      $scope.map.controls[google.maps.ControlPosition.TOP_LEFT].push(originText);
 	  var destinationText = (document.getElementById('destText')); //refer to the destination textbox
-  
+      $scope.map.controls[google.maps.ControlPosition.TOP_LEFT].push(destinationText);
+      var button = document.getElementById('btnShow');
+      $scope.map.controls[google.maps.ControlPosition.TOP_LEFT].push(button);
 	  var defaultBounds = new google.maps.LatLngBounds(
 		  new google.maps.LatLng(51.261915, -0.563049),
 		  new google.maps.LatLng(51.679368, 0.288391)
@@ -92,6 +116,41 @@ function initialize() {
    initialize();
 
   $scope.calculateDistances=function(origin, destination){
+  	console.log("ORIGIN IS:"+origin);
+  	console.log("DESTN IS:"+destination);
+  	
+/*  	var myLatlng = new google.maps.LatLng(51.261915, -0.563049);
+  	var marker = new google.maps.Marker({
+      position: origin,
+      icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
+      title:"Hello Origin!"
+	});
+
+    // To add the marker to the map, call setMap();
+    marker.setMap($scope.map);
+    
+    for(var i=0; i<1; i++){
+    	var destMarker = new google.maps.Marker({
+    		position: destination,
+    		icon: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
+    		title: "Hello Dest"+i
+    	});
+    	destMarker.setMap($scope.map);
+    }
+*/
+
+    dest1 = new google.maps.LatLng(51.523326,-0.1566482);
+    dest2 = new google.maps.LatLng(51.5432695,-0.00187);
+    dest3 = new google.maps.LatLng(51.4995991,-0.1969586);
+    dest4 = new google.maps.LatLng(51.554888,-0.108438);
+    
+    showRoute($scope.origin, $scope.destination);
+    showRoute($scope.origin, dest1);
+    showRoute($scope.origin, dest2);
+    showRoute($scope.origin, dest3);
+    showRoute($scope.origin, dest4);
+
+
   	var service = new google.maps.DistanceMatrixService();
      //DistanceMatrix gives data for each pair (origin:destination) 
 	service.getDistanceMatrix(

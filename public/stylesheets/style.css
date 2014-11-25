@@ -4,8 +4,24 @@ body, html, #map-canvas{
   height:100%;
   width: 100%;
   position: absolute;
-
 }
+
 a {
   color: #00B7FF;
+}
+.textbox{
+        background-color: #fff;
+        width: 400px;
+        margin: 10px;
+        font-family: Roboto;
+        font-size: 12px;
+        font-weight: 300;
+        text-overflow: ellipsis;
+        position:relative;
+      }
+#btnShow{
+	margin: 10px;
+	background-color: #007CC8;
+	color: #fff;
+	font-weight: bold;
 }
