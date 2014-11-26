@@ -38,39 +38,137 @@ bicycleApp.controller('RouteController', function($scope, sharedProperties) {
 bicycleApp.controller('CycleController', function($scope, sharedProperties){
 	
 var myLatlng = new google.maps.LatLng(51.5248517, -0.1303936);
-  var mapOptions = {
+  $scope.mapOptions = {
     zoom: 14,
     center: myLatlng
   };
 
-  $scope.map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+  $scope.map = new google.maps.Map(document.getElementById('map-canvas'), $scope.mapOptions);
 
   $scope.bikeLayer = new google.maps.BicyclingLayer();
   $scope.bikeLayer.setMap($scope.map);
 
+function displayInfoWindow(display, marker){
+   display.open($scope.map, marker);
+}
+
 function showRoute(origin, destination){
 //
-	    var directionsService = new google.maps.DirectionsService();
-	    var directionsDisplay = new google.maps.DirectionsRenderer();
-  	    directionsDisplay.setMap($scope.map);
-        var start = origin;
-	    var end = destination;
- 	    var request = {
- 	      origin:start,
- 	      destination:end,
- 	      travelMode: google.maps.TravelMode.BICYCLING
- 	    };
- 	     directionsService.route(request, function(response, status) {
- 	     if (status == google.maps.DirectionsStatus.OK) {
- 	       directionsDisplay.setDirections(response);
- 	     }
- 	    });
+  var directionsService = new google.maps.DirectionsService();
+  var directionsDisplay = new google.maps.DirectionsRenderer({suppressMarkers: true});
+  directionsDisplay.setMap($scope.map);
+  var start = origin;
+  var end = destination;
+  var request = {
+    origin:start,
+    destination:end,
+    travelMode: google.maps.TravelMode.BICYCLING
+  };
+
+  directionsService.route(request, function(response, status) {
+    if (status == google.maps.DirectionsStatus.OK) {
+      directionsDisplay.setOptions({ preserveViewport: true });
+      directionsDisplay.setDirections(response);
+    }
+  });
+
+  var stepDisplay = new google.maps.InfoWindow();
+  var expectedRacks, expectedTime;
+  expectedRacks = 5;
+  expectedTime = 10;
+ 
+   var contentString = 
+  '<div id="content" style="width:90px;">'+
+    '<div id="pin_content">'+
+      '<img src="../images/bicycle_sport.png" id="bike_image" alt="bicycle_icon">'+
+      '<div id="racks_text">Racks: 38</div>'+
+     '</div>'+
+     '<div id="minutes_text">10 min</div>'
+  '</div>';
+
+  for(var i=0; i<1; i++){
+    var destMarker = new google.maps.Marker({
+      position: destination,
+      icon: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
+      animation: google.maps.Animation.DROP,
+      map: $scope.map
+    });
+    
+    stepDisplay.setContent(contentString);
+    setTimeout(function(){displayInfoWindow(stepDisplay, destMarker);}, 700) //after
+    
+    google.maps.event.addListener(destMarker, 'click', function() {
+      // Open an info window when the marker is clicked on,
+      // containing the text of the step.
+      console.log("CLICKED");
+      stepDisplay.setContent(contentString);
+      stepDisplay.open($scope.map, destMarker);
+	});
+  }
 //
 
 } 
 
-function initialize() {
+function addMarker(markers, positions, iterator){
   
+    markers.push(new google.maps.Marker({
+      map: $scope.map,
+      position: positions[iterator],
+      animation: google.maps.Animation.DROP
+    }));	
+  
+  
+}
+
+function initialize() {
+  /*
+var myLatLng = new google.maps.LatLng(51.5210992,-0.133887);
+	  var styleMarker = new google.maps.Marker({
+   	    position:myLatLng,
+   	    map: $scope.map,
+   	    draggable:true,
+        animation: google.maps.Animation.DROP,
+   	    title:"title" 
+      });
+  
+
+   var contentString = 
+  '<div id="content" style="width:90px;">'+
+    '<div id="pin_content">'+
+      '<img src="../images/bicycle_sport.png" id="bike_image" alt="bicycle_icon">'+
+      '<div id="racks_text">Racks: 38</div>'+
+     '</div>'+
+     '<div id="minutes_text">10 min</div>'
+  '</div>';
+   stepDisplay.setContent(contentString);
+   stepDisplay.open($scope.map, styleMarker);
+*/	  
+/*
+        google.maps.event.addListener(styleMarker, 'click', function(){
+           if(styleMarker.getAnimation()!= null){
+           	  styleMarker.setAnimation(null);
+           }
+           else{
+           	  styleMarker.setAnimation(google.maps.Animation.BOUNCE);
+           }
+        });
+
+      var neighborhoods = [
+        new google.maps.LatLng(51.5235024,-0.1330072),
+        new google.maps.LatLng(51.525238,-0.1338843),
+        new google.maps.LatLng(51.5247262,-0.136926),
+        new google.maps.LatLng(51.5264748,-0.1383036)
+      ];
+      var markers = [];
+      var iterator = 0;
+      for (var i = 0; i < neighborhoods.length; i++) {
+        setTimeout(function() {
+          addMarker(markers, neighborhoods, iterator);
+          iterator++;
+        }, i * 200);
+      }
+
+      */
 	  var originText =(document.getElementById('originText')); //refer to the origin textbox
       $scope.map.controls[google.maps.ControlPosition.TOP_LEFT].push(originText);
 	  var destinationText = (document.getElementById('destText')); //refer to the destination textbox
@@ -116,41 +214,36 @@ function initialize() {
    initialize();
 
   $scope.calculateDistances=function(origin, destination){
+
   	console.log("ORIGIN IS:"+origin);
   	console.log("DESTN IS:"+destination);
-  	
-/*  	var myLatlng = new google.maps.LatLng(51.261915, -0.563049);
+ 	
   	var marker = new google.maps.Marker({
       position: origin,
       icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
-      title:"Hello Origin!"
+      map: $scope.map
 	});
+        
 
-    // To add the marker to the map, call setMap();
-    marker.setMap($scope.map);
+    dest1 = new google.maps.LatLng(51.5125477,-0.1156322);
+    dest2 = new google.maps.LatLng(51.5232695,-0.150187);
+    dest3 = new google.maps.LatLng(51.5295991,-0.1569586);
+    dest4 = new google.maps.LatLng(51.524888,-0.158438);
     
-    for(var i=0; i<1; i++){
-    	var destMarker = new google.maps.Marker({
-    		position: destination,
-    		icon: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
-    		title: "Hello Dest"+i
-    	});
-    	destMarker.setMap($scope.map);
-    }
-*/
-
-    dest1 = new google.maps.LatLng(51.523326,-0.1566482);
-    dest2 = new google.maps.LatLng(51.5432695,-0.00187);
-    dest3 = new google.maps.LatLng(51.4995991,-0.1969586);
-    dest4 = new google.maps.LatLng(51.554888,-0.108438);
     
-    showRoute($scope.origin, $scope.destination);
-    showRoute($scope.origin, dest1);
-    showRoute($scope.origin, dest2);
-    showRoute($scope.origin, dest3);
-    showRoute($scope.origin, dest4);
 
+     showRoute($scope.origin, $scope.destination);
+     
+     // $scope.map.setCenter($scope.destination);
+    setTimeout(function(){showRoute($scope.origin, dest1);}, 300);
+    $scope.map.setCenter($scope.destination);
+    $scope.map.setZoom(16);
+     //showRoute($scope.origin, dest1);
+    // showRoute($scope.origin, dest2);
+    // showRoute($scope.origin, dest3);
+    // showRoute($scope.origin, dest4);
 
+    
   	var service = new google.maps.DistanceMatrixService();
      //DistanceMatrix gives data for each pair (origin:destination) 
 	service.getDistanceMatrix(
