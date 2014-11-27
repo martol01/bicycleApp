@@ -43,9 +43,9 @@ bicycleApp.controller('CycleController', function($scope, sharedProperties) {
   journeyInputForm.initialize(); 
   
   
-  $scope.calculateDistances = function(origin, destination){
+  $scope.runSelectionProcess = function(origin, destination){
     var bikeMapRouting = new BikeMapRouting($scope);
-    bikeMapRouting.calculateDistances(origin, destination);  
+    bikeMapRouting.runSelectionProcess(origin, destination);  
   }
 
 });

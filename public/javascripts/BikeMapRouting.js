@@ -1,5 +1,43 @@
 function BikeMapRouting(scope) {
+    
+    var markersMap = {};
+    var startMarkers = [];
+    var destinationMarkers = [];
+    var startPosition;
+    var destinationPosition;
+     this.runSelectionProcess = function(origin, destination){
+       console.log("ORIGIN IS: "+origin);
+       console.log("DESTINATION IS: "+ destination);
 
+       bike1 = new google.maps.LatLng(51.5125477,-0.1156322);
+       bike2 = new google.maps.LatLng(51.5325477,-0.1356322);
+       bike3 = new google.maps.LatLng(51.5225477,-0.1256322);
+       
+       bike4 = new google.maps.LatLng(51.511486,-0.115997);
+       bike5 = new google.maps.LatLng(51.531486,-0.125997);
+       bike6 = new google.maps.LatLng(51.521486,-0.135997);
+
+       var bikestations = [];
+       bikestations.push(bike1);
+       bikestations.push(bike2);
+       bikestations.push(bike3);
+
+       
+       displayMarkers(bikestations, true);
+       
+       bikestations.splice(0, bikestations.length); //delete the list
+       bikestations.push(bike4);
+       bikestations.push(bike5);
+       bikestations.push(bike6);
+
+       displayMarkers(bikestations, false);
+       //function to choose background colour
+       //display message to user
+       
+       //display message to user
+       
+       //calculateDistances(chosenOrigin, chosenDestination);
+     }
      this.calculateDistances = function(origin, destination){
 
 		var marker = new google.maps.Marker({
@@ -49,8 +87,6 @@ function BikeMapRouting(scope) {
 
  }
 
-
-
 	function showRoute(origin, destination) {
 
 		var directionsService = new google.maps.DirectionsService();
@@ -83,20 +119,70 @@ function BikeMapRouting(scope) {
 			map: scope.map
 		});
 		displayInfoWindow(destMarker);
-
 	}
 
-	function addMarker(markers, positions, iterator){
-
-		markers.push(new google.maps.Marker({
-			map: $scope.map,
-			position: positions[iterator],
+    function displayMarkers(bikestations, isStart){
+       var icon;
+       if(isStart){
+          icon = 'http://maps.google.com/mapfiles/ms/icons/green-dot.png';
+       } else {
+       	  icon = 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png';
+       }
+       for(var i=0; i<bikestations.length;i++){
+       	//if bikestation.incentive == true, icon ='../images/incentive.png'
+       	  var marker = new google.maps.Marker({
+			map: scope.map,
+			position: bikestations[i],
+			icon: icon,
 			animation: google.maps.Animation.DROP
-		}));	 
-	}
+	      });
+	      console.log("MARKER IS "+ marker); 
+	      addMarker(marker, isStart);
+	      displayInfoWindow(marker);
+	      
+       }
+    }
 
-	function displayInfoWindow(marker) {
-		var closeBubble = true;
+function addMarker(marker, isStart){
+   if(isStart){
+   	  startMarkers.push(marker);
+   	  google.maps.event.addListener(marker, "click", deleteStartPinsCallback);
+   }
+   else{
+   	   destinationMarkers.push(marker);
+   	   google.maps.event.addListener(marker, "click", deleteDestPinsCallback);
+   }
+}
+function deleteStartPinsCallback(){
+  console.log("TT" + this.position.toString());
+  console.log("STARTMS"+startMarkers.length);
+   for(var i=0; i<startMarkers.length; i++){
+   	if(startMarkers[i] != this){
+        startMarkers[i].setMap(null);
+        var infoBubble = markersMap[startMarkers[i].position];
+        infoBubble.close();
+   	}
+  }
+  startPosition = this.position;
+  scope.map.setCenter(scope.destination);
+}
+
+function deleteDestPinsCallback(){
+  console.log("TT" + this.position.toString());
+  console.log("DESTMS"+destinationMarkers.length);
+   for(var i=0; i<destinationMarkers.length; i++){
+   	if(destinationMarkers[i] != this){
+        destinationMarkers[i].setMap(null);
+        var infoBubble = markersMap[destinationMarkers[i].position];
+        infoBubble.close();
+   	}
+  }
+  destinationPosition = this.position;
+  //scope.map.setCenter(scope.destination);
+  //put bounds so it is visible on the map the whole route
+}
+
+function displayInfoWindow(marker) {
 		var stepDisplay = new InfoBubble({hideCloseButton: true});
 		backgroundColor = 'rgb('+57 +','+57+','+57+')';
 		stepDisplay.setBackgroundColor(backgroundColor);
@@ -112,18 +198,8 @@ function BikeMapRouting(scope) {
 		'<div id="minutes_text">10 min</div>'
 		'</div>';
 		stepDisplay.setContent(contentString);
+		markersMap[marker.position] = stepDisplay;
 		stepDisplay.open(scope.map, marker);
-
-		google.maps.event.addListener(marker, 'click', function(){
-			if(closeBubble){
-				stepDisplay.close();
-				closeBubble = false;
-			} else {
-				stepDisplay.open(scope.map, marker);
-				closeBubble = true;
-			}
-
-		});
 	}
 
 	
