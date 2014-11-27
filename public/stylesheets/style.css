@@ -23,7 +23,7 @@ a {
 #btnShow{
 	margin: 10px;
 	background-color: #007CC8;
-	color: #fff;
+	color: white;
 	font-weight: bold;
 }
 
@@ -37,10 +37,12 @@ a {
 #minutes_text{
 	font-family: Roboto, Arial, sans-serif; 
 	font-size: 10px;
+	color: white;
 }
 
 #racks_text{
     font-size: 13px; 
 	font-weight: bold;
     font-family: Roboto, Arial, sans-serif;
+    color:white;
 }

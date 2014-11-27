@@ -121,7 +121,7 @@ function addMarker(markers, positions, iterator){
 }
 
 function initialize() {
-  /*
+  
 var myLatLng = new google.maps.LatLng(51.5210992,-0.133887);
 	  var styleMarker = new google.maps.Marker({
    	    position:myLatLng,
@@ -130,7 +130,12 @@ var myLatLng = new google.maps.LatLng(51.5210992,-0.133887);
         animation: google.maps.Animation.DROP,
    	    title:"title" 
       });
-  
+  var stepDisplay = new InfoBubble();
+  backgroundColor = 'rgb('+57 +','+57+','+57+')';
+  stepDisplay.setBackgroundColor(backgroundColor);
+  stepDisplay.setMinWidth(110);
+  stepDisplay.setMinHeight(60);
+
 
    var contentString = 
   '<div id="content" style="width:90px;">'+
@@ -142,7 +147,7 @@ var myLatLng = new google.maps.LatLng(51.5210992,-0.133887);
   '</div>';
    stepDisplay.setContent(contentString);
    stepDisplay.open($scope.map, styleMarker);
-*/	  
+	  
 /*
         google.maps.event.addListener(styleMarker, 'click', function(){
            if(styleMarker.getAnimation()!= null){
