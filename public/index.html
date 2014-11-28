@@ -3,18 +3,29 @@
 	<head>
 		<link rel="stylesheet" href="/stylesheets/bootstrap/dist/css/bootstrap.css" type="text/css" media="screen" title="no title" charset="utf-8">
 		<link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
+
+		<link rel="import" href="components/paper-toast/paper-toast.html">
+		
 	</head>
 	<body>
 	  <div ng-controller="MainController">
 	    <div ng-view></div>
 	  </div>
+	  	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+		
 		<script src="/javascripts/angular.js"></script>
 		<script src="/javascripts/angular-route.js"></script>
 		<script src="/javascripts/routes.js"></script>
 		<script src="/javascripts/controllers.js"></script>
-		<script src="/javascripts/MapController.js"></script>
+		<script src="/javascripts/CycleController.js"></script>
 		<script src="/javascripts/BikeMapRouting.js"></script>
+		<script src="/javascripts/BikeMapDrawing.js"></script>
+		<script src="/javascripts/BikeStationFinder.js"></script>
 		<script src="/javascripts/JourneyInputForm.js"></script>
+		<script src="/javascripts/BikeStation.js"></script>
+		<script src="/javascripts/MapController.js"></script> 
+		<script src="/javascripts/BikeNumPredictionFactory.js"></script>
+
 		<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places"></script>
 		<script type="text/javascript" 
       	 src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/styledmarker/src/StyledMarker.js">

@@ -39,6 +39,7 @@ bicycleApp.controller('CycleController', function($scope, sharedProperties) {
 
   var mapController = new MapController($scope);
   mapController.setUpMap();
+  
   var journeyInputForm = new JourneyInputForm($scope);
   journeyInputForm.initialize(); 
   

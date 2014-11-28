@@ -1,206 +1,153 @@
+var globalDestination;
+var globalOrigin;
+
 function BikeMapRouting(scope) {
-    
-    var markersMap = {};
-    var startMarkers = [];
-    var destinationMarkers = [];
-    var startPosition;
-    var destinationPosition;
-     this.runSelectionProcess = function(origin, destination){
-       console.log("ORIGIN IS: "+origin);
-       console.log("DESTINATION IS: "+ destination);
 
-       bike1 = new google.maps.LatLng(51.5125477,-0.1156322);
-       bike2 = new google.maps.LatLng(51.5325477,-0.1356322);
-       bike3 = new google.maps.LatLng(51.5225477,-0.1256322);
-       
-       bike4 = new google.maps.LatLng(51.511486,-0.115997);
-       bike5 = new google.maps.LatLng(51.531486,-0.125997);
-       bike6 = new google.maps.LatLng(51.521486,-0.135997);
+  this.runSelectionProcess = function(origin, destination) {
 
-       var bikestations = [];
-       bikestations.push(bike1);
-       bikestations.push(bike2);
-       bikestations.push(bike3);
+     console.log("ORIGIN IS: "+origin);
+     console.log("DESTINATION IS: "+ destination);
+     globalDestination = destination;
+     globalOrigin = origin;
+     
 
-       
-       displayMarkers(bikestations, true);
-       
-       bikestations.splice(0, bikestations.length); //delete the list
-       bikestations.push(bike4);
-       bikestations.push(bike5);
-       bikestations.push(bike6);
+     var bikeStationFinder = new BikeStationFinder();
 
-       displayMarkers(bikestations, false);
-       //function to choose background colour
-       //display message to user
-       
-       //display message to user
-       
-       //calculateDistances(chosenOrigin, chosenDestination);
-     }
-     this.calculateDistances = function(origin, destination){
+     // getting stations arrays through callback
+     bikeStationFinder.getClosestStations(origin, 3, function(originStationsArray) {
 
-		var marker = new google.maps.Marker({
-			position: origin,
-			icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
-			map: scope.map
-		});
+          var populatedStationArray = populatingStationArray(origin, originStationsArray, function(stationArray) {
+             
+              var bikeMapDrawing = new BikeMapDrawing(scope);
+              console.log("displayMarkers");
+              bikeMapDrawing.displayMarkers(stationArray, true);
+          });
 
-		dest1 = new google.maps.LatLng(51.5125477,-0.1156322);
-		showRoute(scope.origin, scope.destination);
+          
+     });
 
-     setTimeout(function(){showRoute(scope.origin, dest1);}, 300);
-     scope.map.setCenter(scope.destination);
-     scope.map.setZoom(16);
-    
-    var service = new google.maps.DistanceMatrixService();
-     //DistanceMatrix gives data for each pair (origin:destination) 
-     service.getDistanceMatrix(
-     {
-     	origins: [origin],
-     	destinations: [destination],
-     	travelMode: google.maps.TravelMode.BICYCLING,
-     	unitSystem: google.maps.UnitSystem.METRIC,
-     	avoidHighways: false,
-     	avoidTolls: false
-     }, callback);
+  }
 
-     function callback(response, status) {
-     	if (status == google.maps.DistanceMatrixStatus.OK) {
-     		var origins = response.originAddresses;
-     		var destinations = response.destinationAddresses;
+  this.startDrawingDestStations = function() {
 
-     		for (var i = 0; i < origins.length; i++) {
-     			var results = response.rows[i].elements;
-     			for (var j = 0; j < results.length; j++) {
-     				var element = results[j];
-     				var distance = element.distance.text;
-     				var duration = element.duration.text;
-     				var from = origins[i];
-     				var to = destinations[j];
-     				console.log("Distance from "+from +" to "+to+"is: " +distance);
-     				console.log("Duration for the journey from "+from +" to "+to+" is: " +duration);
-     			}
-     		}
-     	}
-     }
+      var bikeStationFinder = new BikeStationFinder();
 
- }
+      bikeStationFinder.getClosestStations(globalDestination, 3, function(destinationStationsArray) {
 
-	function showRoute(origin, destination) {
+          console.log("destinationStationsArray.length="+destinationStationsArray.length);
+          var populatedStationArray = populatingStationArray(globalOrigin, destinationStationsArray, function(stationArray) {
+              var bikeMapDrawing = new BikeMapDrawing(scope);
+              bikeMapDrawing.displayMarkers(stationArray, false);
+          });
+     });
 
-		var directionsService = new google.maps.DirectionsService();
-		var directionsDisplay = new google.maps.DirectionsRenderer({suppressMarkers: true});
-		directionsDisplay.setMap(scope.map);
-		var start = origin;
-		var end = destination;
-		var request = {
-			origin: start,
-			destination: end,
-			travelMode: google.maps.TravelMode.BICYCLING
-		};
+      // scope.map.setCenter(globalDestination);
+      // scope.map.setZoom(16);
 
-		directionsService.route(request, function(response, status) {
-			if (status == google.maps.DirectionsStatus.OK) {
-				directionsDisplay.setOptions({ preserveViewport: true });
-				directionsDisplay.setDirections(response);
-			}
-		});
+      // var bikeMapDrawing = new BikeMapDrawing(scope);
+      // bikeMapDrawing.drawRoute(origin, destination);
 
-		displayPin(destination);
-	}
+  }
 
-	function displayPin(destination) {
 
-		var destMarker = new google.maps.Marker({
-			position: destination,
-			icon: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
-			animation: google.maps.Animation.DROP,
-			map: scope.map
-		});
-		displayInfoWindow(destMarker);
-	}
 
-    function displayMarkers(bikestations, isStart){
-       var icon;
-       if(isStart){
-          icon = 'http://maps.google.com/mapfiles/ms/icons/green-dot.png';
-       } else {
-       	  icon = 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png';
-       }
-       for(var i=0; i<bikestations.length;i++){
-       	//if bikestation.incentive == true, icon ='../images/incentive.png'
-       	  var marker = new google.maps.Marker({
-			map: scope.map,
-			position: bikestations[i],
-			icon: icon,
-			animation: google.maps.Animation.DROP
-	      });
-	      console.log("MARKER IS "+ marker); 
-	      addMarker(marker, isStart);
-	      displayInfoWindow(marker);
-	      
-       }
+
+  function populatingStationArray(startingLocation, stationArray, callback) {
+
+   var callbackIteration = 0;
+   var calculateNum = 0;
+    // console.log("going to animate "+stationArray.length);
+
+    for (var i = 0; i<stationArray.length; i++) {
+      var station = stationArray[i];
+      var stationGeoPoint = station.getGeoPoint();
+      console.log("calculateDistances");
+      calculateDistances(startingLocation, stationGeoPoint, function(distance, duration) {
+
+          console.log("duration = " + duration);
+          stationArray[calculateNum].setDistance(distance);
+          stationArray[calculateNum].setDuration(duration);
+
+          var stationId = stationArray[calculateNum].getId();
+          var currentTimeSeconds = new Date().getTime() / 1000;
+
+          var bikeNumPredictionFactory = new BikeNumPredictionFactory();
+        
+          bikeNumPredictionFactory.calculatePrediction(stationId, currentTimeSeconds + duration, function(predictionNumber) {
+              stationArray[callbackIteration].setBikeNumPrediction(predictionNumber); 
+              if (predictionNumber>5) {
+                stationArray[callbackIteration].setDiscount(true);
+              } else {
+                stationArray[callbackIteration].setDiscount(false);
+              }
+              
+              console.log("populatingStationArray return predictionNumber="+predictionNumber);
+              if (callbackIteration===stationArray.length-1) {
+                callback(stationArray);
+              }
+              callbackIteration++;
+          });
+
+          calculateNum++;
+      });
+
     }
 
-function addMarker(marker, isStart){
-   if(isStart){
-   	  startMarkers.push(marker);
-   	  google.maps.event.addListener(marker, "click", deleteStartPinsCallback);
-   }
-   else{
-   	   destinationMarkers.push(marker);
-   	   google.maps.event.addListener(marker, "click", deleteDestPinsCallback);
-   }
-}
-function deleteStartPinsCallback(){
-  console.log("TT" + this.position.toString());
-  console.log("STARTMS"+startMarkers.length);
-   for(var i=0; i<startMarkers.length; i++){
-   	if(startMarkers[i] != this){
-        startMarkers[i].setMap(null);
-        var infoBubble = markersMap[startMarkers[i].position];
-        infoBubble.close();
-   	}
+    // callback(stationArray);
+
   }
-  startPosition = this.position;
-  scope.map.setCenter(scope.destination);
-}
 
-function deleteDestPinsCallback(){
-  console.log("TT" + this.position.toString());
-  console.log("DESTMS"+destinationMarkers.length);
-   for(var i=0; i<destinationMarkers.length; i++){
-   	if(destinationMarkers[i] != this){
-        destinationMarkers[i].setMap(null);
-        var infoBubble = markersMap[destinationMarkers[i].position];
-        infoBubble.close();
-   	}
+     
+  function calculateDistances(origin, destination, respondCallback) {
+
+      // dest1 = new google.maps.LatLng(51.5125477,-0.1156322);
+      // showRoute(scope.origin, scope.destination);
+
+
+      var bikeMapDrawing = new BikeMapDrawing(scope);
+      bikeMapDrawing.drawRoute(origin, destination);
+
+
+
+      var service = new google.maps.DistanceMatrixService();
+     //DistanceMatrix gives data for each pair (origin:destination) 
+     service.getDistanceMatrix({
+       	origins: [origin],
+       	destinations: [destination],
+       	travelMode: google.maps.TravelMode.BICYCLING,
+       	unitSystem: google.maps.UnitSystem.METRIC,
+       	avoidHighways: false,
+       	avoidTolls: false
+      }, callback);
+
+     function callback(response, status) {
+       	if (status == google.maps.DistanceMatrixStatus.OK) {
+       		var origins = response.originAddresses;
+       		var destinations = response.destinationAddresses;
+
+       		for (var i = 0; i < origins.length; i++) {
+       			var results = response.rows[i].elements;
+       			for (var j = 0; j < results.length; j++) {
+       				var element = results[j];
+       				var distance = element.distance.text;
+       				var duration = element.duration.text;
+       				var from = origins[i];
+       				var to = destinations[j];
+       				// console.log("Distance from "+from +" to "+to+"is: " +distance);
+       				// console.log("Duration for the journey from "+from +" to "+to+" is: " +duration);
+              respondCallback(distance, duration);
+       			}
+       		}
+       	}
+     }
+
   }
-  destinationPosition = this.position;
-  //scope.map.setCenter(scope.destination);
-  //put bounds so it is visible on the map the whole route
-}
 
-function displayInfoWindow(marker) {
-		var stepDisplay = new InfoBubble({hideCloseButton: true});
-		backgroundColor = 'rgb('+57 +','+57+','+57+')';
-		stepDisplay.setBackgroundColor(backgroundColor);
-		stepDisplay.setMinWidth(110);
-		stepDisplay.setMinHeight(60);
 
-		var contentString = 
-		'<div id="content" style="width:90px;">'+
-		'<div id="pin_content">'+
-		'<img src="../images/bicycle_sport.png" id="bike_image" alt="bicycle_icon">'+
-		'<div id="racks_text">Racks: 38</div>'+
-		'</div>'+
-		'<div id="minutes_text">10 min</div>'
-		'</div>';
-		stepDisplay.setContent(contentString);
-		markersMap[marker.position] = stepDisplay;
-		stepDisplay.open(scope.map, marker);
-	}
+   
 
-	
+  
+    //scope.map.setCenter(scope.destination);
+    //put bounds so it is visible on the map the whole route
+  
 }

@@ -16,6 +16,4 @@ function CycleController(scope) {
 	this.calculateDistance = function() {
 
 	}
-
-
 }
