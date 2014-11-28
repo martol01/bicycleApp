@@ -6,16 +6,6 @@ function BikeMapDrawing(scope) {
   	scope.startPosition=null;
     var destinationPosition;
 
-	this.drawRoute = function(origin, dest) {
-
-	  setTimeout(function(){showRoute(origin, dest);}, 300);
-      // scope.map.setCenter(dest);
-      // scope.map.setZoom(16);
-      // showRoute(origin, dest);
-
-	}
-
-
 	function showRoute(origin, destination) {
 		
       console.log("SHOWING ROUTE FOR "+origin +"and "+destination);
@@ -30,7 +20,7 @@ function BikeMapDrawing(scope) {
 
 	    directionsService.route(request, function(response, status) {
 	       if (status == google.maps.DirectionsStatus.OK) {
-	        directionsDisplay.setOptions({ preserveViewport: true });
+	        directionsDisplay.setOptions();
 	        directionsDisplay.setDirections(response);
 	      }
 	    });
