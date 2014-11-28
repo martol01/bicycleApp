@@ -3,8 +3,8 @@ function BikeMapDrawing(scope) {
 	var markersMap = {};
 	var startMarkers = [];
   	var destinationMarkers = [];
-  	var startPosition;
-  	var destinationPosition;
+  	scope.startPosition=null;
+    var destinationPosition;
 
 	this.drawRoute = function(origin, dest) {
 
@@ -17,17 +17,14 @@ function BikeMapDrawing(scope) {
 
 
 	function showRoute(origin, destination) {
-
 		
-
+      console.log("SHOWING ROUTE FOR "+origin +"and "+destination);
 	    var directionsService = new google.maps.DirectionsService();
 	    var directionsDisplay = new google.maps.DirectionsRenderer({suppressMarkers: true});
 	    directionsDisplay.setMap(scope.map);
-	    var start = origin;
-	    var end = destination;
 	    var request = {
-	       origin: start,
-	       destination: end,
+	       origin: origin,
+	       destination: destination,
 	       travelMode: google.maps.TravelMode.BICYCLING
 	    };
 
@@ -138,7 +135,6 @@ function BikeMapDrawing(scope) {
 
   function deleteStartPinsCallback() {
       console.log("TT" + this.position.toString());
-      console.log("STARTMS"+startMarkers.length);
       for(var i=0; i<startMarkers.length; i++){
         if(startMarkers[i] != this){
           startMarkers[i].setMap(null);
@@ -146,7 +142,7 @@ function BikeMapDrawing(scope) {
           infoBubble.close();
         }
       }
-      startPosition = this.position;
+      scope.startPosition = this.position;
       var bikeMapRouting = new BikeMapRouting(scope);
       bikeMapRouting.startDrawingDestStations();
       // scope.map.setCenter(scope.destination);
@@ -162,7 +158,9 @@ function BikeMapDrawing(scope) {
         infoBubble.close();
       }
     }
-  }
     destinationPosition = this.position;
+    console.log("START POSITION IN DELETE DESTI IS :"+scope.startPosition.toString());
+    showRoute(scope.startPosition, destinationPosition);
+  }
 
 }

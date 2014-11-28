@@ -1,8 +1,9 @@
 var globalDestination;
 var globalOrigin;
-
+var bikeMapDrawing;
 function BikeMapRouting(scope) {
 
+  
   this.runSelectionProcess = function(origin, destination) {
 
      console.log("ORIGIN IS: "+origin);
@@ -12,21 +13,18 @@ function BikeMapRouting(scope) {
      
 
      var bikeStationFinder = new BikeStationFinder();
+     bikeMapDrawing = new BikeMapDrawing(scope);
 
      // getting stations arrays through callback
      bikeStationFinder.getClosestStations(origin, 3, function(originStationsArray) {
 
-          var populatedStationArray = populatingStationArray(origin, originStationsArray, function(stationArray) {
-             
-              var bikeMapDrawing = new BikeMapDrawing(scope);
-              console.log("displayMarkers");
-              bikeMapDrawing.displayMarkers(stationArray, true);
-              scope.map.setCenter(origin);
-              scope.map.setZoom(17);
-
+     	var populatedStationArray = populatingStationArray(origin, originStationsArray,
+     		function(stationArray) {
+     			console.log("displayMarkers");
+     			bikeMapDrawing.displayMarkers(stationArray, true);
+     			scope.map.setCenter(origin);
+     			scope.map.setZoom(17);
           });
-
-          
      });
 
   }
@@ -39,7 +37,6 @@ function BikeMapRouting(scope) {
 
           console.log("destinationStationsArray.length="+destinationStationsArray.length);
           var populatedStationArray = populatingStationArray(globalOrigin, destinationStationsArray, function(stationArray) {
-              var bikeMapDrawing = new BikeMapDrawing(scope);
               bikeMapDrawing.displayMarkers(stationArray, false);
           });
      });
@@ -105,12 +102,6 @@ function BikeMapRouting(scope) {
 
       // dest1 = new google.maps.LatLng(51.5125477,-0.1156322);
       // showRoute(scope.origin, scope.destination);
-
-
-      var bikeMapDrawing = new BikeMapDrawing(scope);
-      bikeMapDrawing.drawRoute(origin, destination);
-
-
 
       var service = new google.maps.DistanceMatrixService();
      //DistanceMatrix gives data for each pair (origin:destination) 
