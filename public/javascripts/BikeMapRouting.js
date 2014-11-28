@@ -21,6 +21,9 @@ function BikeMapRouting(scope) {
               var bikeMapDrawing = new BikeMapDrawing(scope);
               console.log("displayMarkers");
               bikeMapDrawing.displayMarkers(stationArray, true);
+              scope.map.setCenter(origin);
+              scope.map.setZoom(17);
+
           });
 
           
@@ -80,7 +83,7 @@ function BikeMapRouting(scope) {
               } else {
                 stationArray[callbackIteration].setDiscount(false);
               }
-              
+
               console.log("populatingStationArray return predictionNumber="+predictionNumber);
               if (callbackIteration===stationArray.length-1) {
                 callback(stationArray);
