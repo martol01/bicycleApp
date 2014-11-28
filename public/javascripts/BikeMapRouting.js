@@ -2,7 +2,7 @@ var globalDestination;
 var globalOrigin;
 var bikeMapDrawing;
 function BikeMapRouting(scope) {
-
+   bikeMapDrawing = new BikeMapDrawing(scope, this);
   
   this.runSelectionProcess = function(origin, destination) {
 
@@ -15,7 +15,9 @@ function BikeMapRouting(scope) {
      
 
      var bikeStationFinder = new BikeStationFinder();
-     bikeMapDrawing = new BikeMapDrawing(scope, this);
+     
+     console.log("CLEARING IN PROGRESS...");
+     bikeMapDrawing.clearMap();
 
      // getting stations arrays through callback
      bikeStationFinder.getClosestStations(origin, 3, function(originStationsArray) {
@@ -24,7 +26,6 @@ function BikeMapRouting(scope) {
      		function(stationArray) {
      			bikeMapDrawing.displayMarkers(stationArray, true);
      			scope.map.setCenter(origin);
-     			console.log("ORIGIN IS L "+origin);
      			scope.map.setZoom(17);
           });
      });

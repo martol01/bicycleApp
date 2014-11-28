@@ -5,12 +5,13 @@ function BikeMapDrawing(scope, bikeMapRouting) {
   	var destinationMarkers = [];
   	scope.startPosition=null;
     var destinationPosition;
+    var directionsDisplay;
 
 	function showRoute(origin, destination) {
 		
       console.log("SHOWING ROUTE FOR "+origin +"and "+destination);
 	    var directionsService = new google.maps.DirectionsService();
-	    var directionsDisplay = new google.maps.DirectionsRenderer({suppressMarkers: true});
+	    directionsDisplay = new google.maps.DirectionsRenderer({suppressMarkers: true});
 	    directionsDisplay.setMap(scope.map);
 	    var request = {
 	       origin: origin,
@@ -120,14 +121,40 @@ function BikeMapDrawing(scope, bikeMapRouting) {
       }
   }
 
+  this.clearMap = function(){
+    for(var i=0; i<startMarkers.length; i++){
+      startMarkers[i].setMap(null);
+      var infoBubble = markersMap[startMarkers[i].position];
+      infoBubble.close();
+      delete markersMap[startMarkers[i].position];
+      destinationMarkers[i].setMap(null);
+      infoBubble = markersMap[destinationMarkers[i].position];
+      infoBubble.close();
+      delete markersMap[destinationMarkers[i].position];
+    }
+    console.log("SIZE OF HASJHK A"+Object.keys(markersMap).length);
+    startMarkers.splice(0, startMarkers.length);
+    destinationMarkers.splice(0, destinationMarkers.length);
+    if(directionsDisplay){
+      directionsDisplay.setMap(null);  
+    }
+    
+  }
   function deleteStartPinsCallback() {
-      console.log("TT" + this.position.toString());
-      for(var i=0; i<startMarkers.length; i++){
+      var len = startMarkers.length;
+      var i = 0;
+      while(len>0){
         if(startMarkers[i] != this){
           startMarkers[i].setMap(null);
           var infoBubble = markersMap[startMarkers[i].position];
+          delete markersMap[startMarkers[i].position];
+          startMarkers.splice(i, 1);
           infoBubble.close();
+
+        } else{
+          i++;
         }
+        len--;
       }
       scope.startPosition = this.position;
       bikeMapRouting.startDrawingDestStations();
@@ -136,13 +163,19 @@ function BikeMapDrawing(scope, bikeMapRouting) {
 
   function deleteDestPinsCallback() {
     console.log("TT" + this.position.toString());
-    console.log("DESTMS"+destinationMarkers.length);
-    for(var i=0; i<destinationMarkers.length; i++){
+    var len = destinationMarkers.length;
+    var i = 0;
+    while(len>0){
       if(destinationMarkers[i] != this){
         destinationMarkers[i].setMap(null);
         var infoBubble = markersMap[destinationMarkers[i].position];
+        delete markersMap[destinationMarkers[i].position];
+        destinationMarkers.splice(i, 1);
         infoBubble.close();
+      } else{
+        i++;
       }
+      len --;
     }
     destinationPosition = this.position;
     console.log("START POSITION IN DELETE DESTI IS :"+scope.startPosition.toString());

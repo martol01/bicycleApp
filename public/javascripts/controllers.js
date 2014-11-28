@@ -42,10 +42,9 @@ bicycleApp.controller('CycleController', function($scope, sharedProperties) {
   
   var journeyInputForm = new JourneyInputForm($scope);
   journeyInputForm.initialize(); 
-  
+  var bikeMapRouting = new BikeMapRouting($scope);
   
   $scope.runSelectionProcess = function(origin, destination){
-    var bikeMapRouting = new BikeMapRouting($scope);
     bikeMapRouting.runSelectionProcess(origin, destination);  
   }
 
