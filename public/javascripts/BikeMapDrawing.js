@@ -1,4 +1,4 @@
-function BikeMapDrawing(scope) {
+function BikeMapDrawing(scope, bikeMapRouting) {
 	
 	var markersMap = {};
 	var startMarkers = [];
@@ -43,6 +43,7 @@ function BikeMapDrawing(scope) {
 
 
     this.displayMarkers = function(bikestations, isStart) {
+      console.log("BIKESTATIONS LENGTH"+bikestations.length + "is START" + isStart);
 
      var icon = getIcon(isStart);
     
@@ -63,8 +64,6 @@ function BikeMapDrawing(scope) {
                icon: icon,
                animation: google.maps.Animation.DROP
             });
-
-            console.log("MARKER IS "+ marker); 
             addMarker(marker, isStart);
         	var bikeStation = bikestations[i];
         	// console.log("bikeStation.getPredictBikeNum="+bikeStation.getPredictBikeNum());
@@ -79,10 +78,8 @@ function BikeMapDrawing(scope) {
   	 var icon;
   	 if (isStart) {
         icon = 'http://maps.google.com/mapfiles/ms/icons/green-dot.png';
-        console.log("displayMarkers green");
      } else {
         icon = 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png';
-        console.log("displayMarkers blue");
      }
      return icon;
   }
@@ -133,7 +130,6 @@ function BikeMapDrawing(scope) {
         }
       }
       scope.startPosition = this.position;
-      var bikeMapRouting = new BikeMapRouting(scope);
       bikeMapRouting.startDrawingDestStations();
       // scope.map.setCenter(scope.destination);
   }

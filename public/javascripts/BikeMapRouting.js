@@ -6,6 +6,8 @@ function BikeMapRouting(scope) {
   
   this.runSelectionProcess = function(origin, destination) {
 
+  	//call clear and then do all the rest
+
      console.log("ORIGIN IS: "+origin);
      console.log("DESTINATION IS: "+ destination);
      globalDestination = destination;
@@ -13,16 +15,16 @@ function BikeMapRouting(scope) {
      
 
      var bikeStationFinder = new BikeStationFinder();
-     bikeMapDrawing = new BikeMapDrawing(scope);
+     bikeMapDrawing = new BikeMapDrawing(scope, this);
 
      // getting stations arrays through callback
      bikeStationFinder.getClosestStations(origin, 3, function(originStationsArray) {
 
      	var populatedStationArray = populatingStationArray(origin, originStationsArray,
      		function(stationArray) {
-     			console.log("displayMarkers");
      			bikeMapDrawing.displayMarkers(stationArray, true);
      			scope.map.setCenter(origin);
+     			console.log("ORIGIN IS L "+origin);
      			scope.map.setZoom(17);
           });
      });
@@ -38,15 +40,10 @@ function BikeMapRouting(scope) {
           console.log("destinationStationsArray.length="+destinationStationsArray.length);
           var populatedStationArray = populatingStationArray(globalOrigin, destinationStationsArray, function(stationArray) {
               bikeMapDrawing.displayMarkers(stationArray, false);
+              scope.map.setCenter(globalDestination);
+     	      scope.map.setZoom(17);
           });
      });
-
-      // scope.map.setCenter(globalDestination);
-      // scope.map.setZoom(16);
-
-      // var bikeMapDrawing = new BikeMapDrawing(scope);
-      // bikeMapDrawing.drawRoute(origin, destination);
-
   }
 
 
