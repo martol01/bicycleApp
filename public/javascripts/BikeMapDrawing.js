@@ -162,11 +162,15 @@ function BikeMapDrawing(scope, bikeMapRouting) {
       }
       scope.startPosition = this.position;
 
-      var toast = document.getElementById('toast');
-      toast.text = "Choose destination bike station!";
-      toast.show();
+      showPopUpWithText("Choose destination bike station!");
 
       bikeMapRouting.startDrawingDestStations();
+  }
+
+  function showPopUpWithText(text) {
+      var toast = document.getElementById('toast');
+      toast.text = text;
+      toast.show();
   }
 
   function deleteDestPinsCallback() {
