@@ -30,7 +30,7 @@ function BikeMapDrawing(scope, bikeMapRouting) {
     }
 
 
-    function displayPin(destination) {
+    this.displayPin = function(destination) {
 
 	    var destMarker = new google.maps.Marker({
 	       position: destination,
@@ -38,7 +38,7 @@ function BikeMapDrawing(scope, bikeMapRouting) {
 	       animation: google.maps.Animation.DROP,
 	       map: scope.map
 	    });
-	    displayInfoWindow(destMarker);
+	    // displayInfoWindow(destMarker);
     }
 
 
@@ -65,7 +65,7 @@ function BikeMapDrawing(scope, bikeMapRouting) {
                icon: icon,
                animation: google.maps.Animation.DROP
             });
-            addMarker(marker, isStart);
+            this.addMarker(marker, isStart);
         	var bikeStation = bikestations[i];
         	// console.log("bikeStation.getPredictBikeNum="+bikeStation.getPredictBikeNum());
         	if (bikeStation) {
@@ -111,7 +111,7 @@ function BikeMapDrawing(scope, bikeMapRouting) {
 
 
 
-  function addMarker(marker, isStart){
+  this.addMarker = function(marker, isStart){
       if (isStart){
          startMarkers.push(marker);
          google.maps.event.addListener(marker, "click", deleteStartPinsCallback);
@@ -125,11 +125,15 @@ function BikeMapDrawing(scope, bikeMapRouting) {
     for(var i=0; i<startMarkers.length; i++){
       startMarkers[i].setMap(null);
       var infoBubble = markersMap[startMarkers[i].position];
-      infoBubble.close();
+      if (infoBubble) {
+        infoBubble.close();
+      }
       delete markersMap[startMarkers[i].position];
       destinationMarkers[i].setMap(null);
       infoBubble = markersMap[destinationMarkers[i].position];
-      infoBubble.close();
+      if (infoBubble) {
+        infoBubble.close();
+      }
       delete markersMap[destinationMarkers[i].position];
     }
     console.log("SIZE OF HASJHK A"+Object.keys(markersMap).length);
@@ -157,8 +161,12 @@ function BikeMapDrawing(scope, bikeMapRouting) {
         len--;
       }
       scope.startPosition = this.position;
+
+      var toast = document.getElementById('toast');
+      toast.text = "Choose destination bike station!";
+      toast.show();
+
       bikeMapRouting.startDrawingDestStations();
-      // scope.map.setCenter(scope.destination);
   }
 
   function deleteDestPinsCallback() {
@@ -171,7 +179,9 @@ function BikeMapDrawing(scope, bikeMapRouting) {
         var infoBubble = markersMap[destinationMarkers[i].position];
         delete markersMap[destinationMarkers[i].position];
         destinationMarkers.splice(i, 1);
-        infoBubble.close();
+        if (infoBubble) {
+          infoBubble.close();
+        }
       } else{
         i++;
       }

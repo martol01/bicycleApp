@@ -3,7 +3,16 @@
 	<head>
 		<link rel="stylesheet" href="/stylesheets/bootstrap/dist/css/bootstrap.css" type="text/css" media="screen" title="no title" charset="utf-8">
 		<link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
+
+  		<!-- Polymer things -->
+		<link rel="import" href="/bower_components/paper-toast/paper-toast.html">
+		<link rel="import" href="/bower_components/font-roboto/roboto.html">
+		<link rel="import" href="/bower_components/paper-button/paper-button.html">
+		<link rel="import" href="/bower_components/paper-input/paper-input-decorator.html" rel="import">
+  		<link rel="import" href="/bower_components/paper-input/paper-input.html" rel="import">
+
 	</head>
+
 	<body>
 	  <div ng-controller="MainController">
 	    <div ng-view></div>
@@ -23,11 +32,14 @@
 		<script src="/javascripts/MapController.js"></script> 
 		<script src="/javascripts/BikeNumPredictionFactory.js"></script>
 
+		<script src="/bower_components/webcomponentsjs/webcomponents.js"></script>
+
 		<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places"></script>
 		<script type="text/javascript" 
       	 src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/styledmarker/src/StyledMarker.js">
     	</script>
-        <script type="text/javascript" src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/infobubble/src/infobubble-compiled.js"></script>
+        <script type="text/javascript" src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/infobubble/src/infobubble-compiled.js">
+        </script>
 
 	</body>
 </html>

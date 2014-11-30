@@ -1,22 +1,27 @@
 
-<div>
+<div unresolved>
 
 	<div class="row">
 	  <div>
-	  	<button id="btnShow" ng-click="runSelectionProcess(origin, destination)">Show Route</button>
+	  	<paper-button class="button raised blue" id="btnShow" onclick="document.querySelector('#toast').show()" ng-click="runSelectionProcess(origin, destination)">
+		  	<div class="center">Show Route</div>
+	      	<paper-ripple fit></paper-ripple>
+	  	</paper-button>
 	  </div>
-	  
-	  <div>
-	  	<input id="originText" class="textbox" type="text"></input>
+	  <paper-toast id="toast" class="capsule" text="Choose starting bike station!" style="padding-right: 60px;">
+	  </paper-toast>
+
+	  <div>  	
+	  	  <paper-input id="originText" class="custom" label="Choose starting point..."> 
+		  </paper-input>
 	  </div>
-	  
+
 	  <div>
-	  	<input id ="destText" class="textbox" type="text"></input>
+	 	  <paper-input id ="destText" class="custom" label="Choose destination..."> 
+		  </paper-input>
 	  </div>
 	
 	</div>
    
    <div id="map-canvas"></div>
 </div>
-<!--  <p id="demo">Click the button to change the text in this paragraph.</p>  -->
-  

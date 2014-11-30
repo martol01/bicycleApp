@@ -12,6 +12,11 @@ function BikeMapRouting(scope) {
      console.log("DESTINATION IS: "+ destination);
      globalDestination = destination;
      globalOrigin = origin;
+
+     // var icon = 'http://maps.google.com/mapfiles/ms/icons/green-dot.png';
+     
+      bikeMapDrawing.displayPin(origin);
+      bikeMapDrawing.displayPin(destination);
      
 
      var bikeStationFinder = new BikeStationFinder();
@@ -19,32 +24,44 @@ function BikeMapRouting(scope) {
      console.log("CLEARING IN PROGRESS...");
      bikeMapDrawing.clearMap();
 
+     // console.log("origin zooming");
+     // scope.map.setCenter(globalOrigin);
+     scope.map.setZoom(16);
+
+      // scope.map.setCenter(globalOrigin); // set map center to marker position
+      // smoothZoom(scope.map, 17, scope.map.getZoom()); 
+
      // getting stations arrays through callback
      bikeStationFinder.getClosestStations(origin, 3, function(originStationsArray) {
 
      	var populatedStationArray = populatingStationArray(origin, originStationsArray,
      		function(stationArray) {
+           
      			bikeMapDrawing.displayMarkers(stationArray, true);
-     			scope.map.setCenter(origin);
-     			scope.map.setZoom(17);
           });
+          
      });
 
   }
 
+
   this.startDrawingDestStations = function() {
+
+      // console.log("dest zooming");
+      // scope.map.setCenter(globalDestination);
+      scope.map.setZoom(16);
+      // scope.map.setCenter(globalDestination); // set map center to marker position
+      // smoothZoom(scope.map, 17, scope.map.getZoom());
+
 
       var bikeStationFinder = new BikeStationFinder();
 
       bikeStationFinder.getClosestStations(globalDestination, 3, function(destinationStationsArray) {
-
           console.log("destinationStationsArray.length="+destinationStationsArray.length);
           var populatedStationArray = populatingStationArray(globalOrigin, destinationStationsArray, function(stationArray) {
               bikeMapDrawing.displayMarkers(stationArray, false);
-              scope.map.setCenter(globalDestination);
-     	      scope.map.setZoom(17);
           });
-     });
+      });
   }
 
 
@@ -134,12 +151,5 @@ function BikeMapRouting(scope) {
      }
 
   }
-
-
-   
-
-  
-    //scope.map.setCenter(scope.destination);
-    //put bounds so it is visible on the map the whole route
   
 }

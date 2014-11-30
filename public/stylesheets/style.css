@@ -9,17 +9,73 @@ body, html, #map-canvas{
 a {
   color: #00B7FF;
 }
-.textbox{
-        background-color: #fff;
-        width: 400px;
-        height:40px;
-        margin: 10px;
-        font-family: Roboto;
-        font-size: 12px;
-        font-weight: 300;
-        text-overflow: ellipsis;
-        position:relative;
-      }
+
+   paper-toast {
+      bottom: 15px;
+      left: 10px;
+      width: 40%;
+    }
+
+    paper-input {
+      background-color: #fff;
+      width: 350px;
+      height:30px;
+      margin: 15px;
+      font-family: Roboto;
+      font-size: 13px;
+      font-weight: 30;
+      text-indent: 5px;
+
+      text-overflow: ellipsis;
+      position:relative;      
+    }
+
+    #originText, #destText {
+      padding-bottom: 35px;
+    }
+
+    .button {
+      display: inline-block;
+      position: relative;
+      width: 150px;
+      height: 50px;
+      line-height: 32px;
+      border-radius: 2px;
+      font-size: 1.2em;
+      background-color: #fff;
+      color: #646464;
+    }
+    
+    .button > paper-ripple {
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    
+    .button.narrow {
+      width: 60px;
+    }
+    
+    .button.grey {
+      background-color: #eee;
+    }
+    
+    .button.blue {
+      background-color: #4285f4;
+      color: #fff;
+    }
+    
+    .button.raised {
+      transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      transition-delay: 0.2s;
+      box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+    }
+    
+    .button.raised:active {
+      box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2);
+      transition-delay: 0s;
+    }
+  
+
 #btnShow{
 	margin: 10px;
 	background-color: #007CC8;
@@ -29,7 +85,7 @@ a {
 
 #bike_image{
 	float: left;
-	margin-right:5px;
+	margin-right: 5px;
 	width: 21px;
 	height: 21px;
 }
@@ -41,8 +97,9 @@ a {
 }
 
 #racks_text{
-    font-size: 13px; 
-	font-weight: bold;
-    font-family: Roboto, Arial, sans-serif;
-    color:white;
+  font-size: 13px; 
+  font-weight: bold;
+  font-family: Roboto, Arial, sans-serif;
+  color:white;
 }
+
