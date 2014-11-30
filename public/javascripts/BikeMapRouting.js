@@ -3,65 +3,61 @@ var globalOrigin;
 var bikeMapDrawing;
 function BikeMapRouting(scope) {
    bikeMapDrawing = new BikeMapDrawing(scope, this);
+   var bikeNumPredictionFactory;
   
   this.runSelectionProcess = function(origin, destination) {
 
-  	//call clear and then do all the rest
-
-     console.log("ORIGIN IS: "+origin);
-     console.log("DESTINATION IS: "+ destination);
-     globalDestination = destination;
+  	 globalDestination = destination;
      globalOrigin = origin;
-
-     // var icon = 'http://maps.google.com/mapfiles/ms/icons/green-dot.png';
-     
-      bikeMapDrawing.displayPin(origin);
-      bikeMapDrawing.displayPin(destination);
-     
 
      var bikeStationFinder = new BikeStationFinder();
      
-     console.log("CLEARING IN PROGRESS...");
      bikeMapDrawing.clearMap();
 
-     // console.log("origin zooming");
-     // scope.map.setCenter(globalOrigin);
      scope.map.setZoom(16);
 
-      // scope.map.setCenter(globalOrigin); // set map center to marker position
-      // smoothZoom(scope.map, 17, scope.map.getZoom()); 
+     // chache latest curBikes Json to work further
+     // var startTime = Date.now();
+     localStorage.removeItem("dataCache");
+     bikeNumPredictionFactory = new BikeNumPredictionFactory();
+     bikeNumPredictionFactory.cahceBikeNumJson(function() {
 
-     // getting stations arrays through callback
-     bikeStationFinder.getClosestStations(origin, 3, function(originStationsArray) {
+        bikeStationFinder.getClosestStations(origin, 3, function(originStationsArray) {
 
-     	var populatedStationArray = populatingStationArray(origin, originStationsArray,
-     		function(stationArray) {
-           
-     			bikeMapDrawing.displayMarkers(stationArray, true);
+          var populatedStationArray = populatingStationArray(origin, originStationsArray,
+              function(stationArray) {
+                bikeMapDrawing.displayMarkers(stationArray, true);
+              });  
           });
-          
+
      });
+     // var cacheTime = Date.now();
+     // console.log("dataCached "+(cacheTime-startTime));
+     
+     // getting stations arrays through callback
 
   }
 
 
   this.startDrawingDestStations = function() {
 
-      // console.log("dest zooming");
-      // scope.map.setCenter(globalDestination);
       scope.map.setZoom(16);
-      // scope.map.setCenter(globalDestination); // set map center to marker position
-      // smoothZoom(scope.map, 17, scope.map.getZoom());
-
 
       var bikeStationFinder = new BikeStationFinder();
 
-      bikeStationFinder.getClosestStations(globalDestination, 3, function(destinationStationsArray) {
-          console.log("destinationStationsArray.length="+destinationStationsArray.length);
-          var populatedStationArray = populatingStationArray(globalOrigin, destinationStationsArray, function(stationArray) {
-              bikeMapDrawing.displayMarkers(stationArray, false);
-          });
+      localStorage.removeItem("dataCache");
+      bikeNumPredictionFactory = new BikeNumPredictionFactory();
+      bikeNumPredictionFactory.cahceBikeNumJson(function() {
+
+        bikeStationFinder.getClosestStations(globalDestination, 3, function(destinationStationsArray) {
+          // console.log("destinationStationsArray.length="+destinationStationsArray.length);
+            var populatedStationArray = populatingStationArray(globalOrigin, destinationStationsArray, function(stationArray) {
+                bikeMapDrawing.displayMarkers(stationArray, false);
+            });
+        });
+
       });
+      
   }
 
 
@@ -79,15 +75,15 @@ function BikeMapRouting(scope) {
       console.log("calculateDistances");
       calculateDistances(startingLocation, stationGeoPoint, function(distance, duration) {
 
-          console.log("duration = " + duration);
+          // console.log("duration = " + duration);
           stationArray[calculateNum].setDistance(distance);
           stationArray[calculateNum].setDuration(duration);
 
           var stationId = stationArray[calculateNum].getId();
-          var currentTimeSeconds = new Date().getTime() / 1000;
+          var currentTimeSeconds = new Date().getTime() / 1000;          
+          
+          console.log("bike json is="+bikeNumPredictionFactory.json);
 
-          var bikeNumPredictionFactory = new BikeNumPredictionFactory();
-        
           bikeNumPredictionFactory.calculatePrediction(stationId, currentTimeSeconds + duration, function(predictionNumber) {
               stationArray[callbackIteration].setBikeNumPrediction(predictionNumber); 
               if (predictionNumber>5) {
@@ -96,7 +92,7 @@ function BikeMapRouting(scope) {
                 stationArray[callbackIteration].setDiscount(false);
               }
 
-              console.log("populatingStationArray return predictionNumber="+predictionNumber);
+              // console.log("populatingStationArray return predictionNumber="+predictionNumber);
               if (callbackIteration===stationArray.length-1) {
                 callback(stationArray);
               }
@@ -107,8 +103,6 @@ function BikeMapRouting(scope) {
       });
 
     }
-
-    // callback(stationArray);
 
   }
 
