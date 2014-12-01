@@ -128,11 +128,11 @@ function BikeMapDrawing(scope, bikeMapRouting) {
       console.log("PREDICT IS: "+predictBikeNum);
       var totalBikeNum = bikestation.getBikeNumTotal();
       //TO BE REMOVED
-      totalBikeNum = 40;
+      totalBikeNum = 25;
       console.log("TOTAL IS: "+totalBikeNum);
       if(totalBikeNum != 0){
          //TO BE REMOVED
-         predictBikeNum = 28;
+         // predictBikeNum = 4;
          var percentage = predictBikeNum / totalBikeNum;
          var backgroundColor = getBackroundColour(percentage);
          stepDisplay.setBackgroundColor(backgroundColor);
