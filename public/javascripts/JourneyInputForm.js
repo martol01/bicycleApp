@@ -11,8 +11,29 @@ function JourneyInputForm(scope){
     };
 
 	this.initialize = function(){
-		var startForm =(document.getElementById('startForm')); //refer to the origin textbox
-		scope.map.controls[google.maps.ControlPosition.TOP_LEFT].push(startForm);
+
+		var startInput =(document.getElementById('startInput')); //refer to the origin textbox
+		
+        var div = document.createElement('div');
+        div.innerHTML = '<img id="cur_location_img" style="position:absolute;z-index: 1; margin-top: 7px; left:330px; top:20px;"'+
+        ' src="../images/location.png" onclick="displayCurrentLocation();"/>';
+
+        // div.innerHTML = '<paper-button class="button raised" style="position:absolute;z-index: 99; margin-top: 7px; left:130px; top:20px;" iconsrc="http://i.stack.imgur.com/orZ4x.png" ></paper-button>';
+
+        startInput.appendChild(div)
+
+
+        var div1 = document.createElement('div');
+        div1.innerHTML = '<paper-input id="originText" style="margin-top:15px; margin-right: 10px;'+
+        ' padding-bottom: 35px;"></paper-input>';
+        startInput.appendChild(div1);
+
+		scope.map.controls[google.maps.ControlPosition.TOP_LEFT].push(startInput);
+
+
+
+
+
 	    var destinationText = (document.getElementById('destText')); //refer to the destination textbox
 	    scope.map.controls[google.maps.ControlPosition.TOP_LEFT].push(destinationText);
 	    var button = document.getElementById('btnShow');
@@ -20,6 +41,15 @@ function JourneyInputForm(scope){
 	    initializeAutoComplete(originText, destinationText);
 	}
 
+    window.displayCurrentLocation = function(){
+    	getCurrentLocation(getLocationCallback);
+    }
+    function getLocationCallback(geolocation){
+     bikeMapDrawing.drawCurrentLocation(geolocation);
+     var origin = document.getElementById("originText");
+     scope.origin = geolocation;
+     origin.value = 'My location'
+  }
     function initializeAutoComplete(originText, destinationText){
 		var autocompleteOrigin = new google.maps.places.Autocomplete(originText,options);
 		var placeOrigin = "";
@@ -37,7 +67,7 @@ function JourneyInputForm(scope){
 		});
 	}
 	
-	this.getCurrentLocation = function(callback){
+	function getCurrentLocation(callback){
 		if (navigator.geolocation) {
 			navigator.geolocation.getCurrentPosition(function(position) {
 				var geolocation = new google.maps.LatLng(
