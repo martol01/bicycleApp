@@ -52,10 +52,14 @@ bicycleApp.controller('CycleController', function($scope, sharedProperties) {
   
   $scope.displayCurrentLocation = function(){
     journeyInputForm.getCurrentLocation(getLocationCallback);
+
   }
 
   function getLocationCallback(geolocation){
      bikeMapDrawing.drawCurrentLocation(geolocation);
+     var origin = document.getElementById("originText");
+     $scope.origin = geolocation;
+     origin.value = 'My location'
   }
   
   $scope.runSelectionProcess = function(origin, destination){
