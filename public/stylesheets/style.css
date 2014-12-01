@@ -20,19 +20,36 @@ a {
       background-color: #fff;
       width: 350px;
       height:30px;
-      margin: 15px;
       font-family: Roboto;
       font-size: 13px;
       font-weight: 30;
       text-indent: 5px;
-
       text-overflow: ellipsis;
       position:relative;      
     }
 
-    #originText, #destText {
-      padding-bottom: 35px;
+    #originText {
+      display: inline-block;
+      border: none; 
     }
+    #cur_location_img {
+      vertical-align:middle;
+      padding-bottom: 7px;
+      cursor:pointer; 
+    }
+    
+    #startForm {
+      display: inline-block;
+      width: 370px;
+      height:40px;
+      background-color: #fff;
+      margin:15px;
+    }
+    
+    #destText {
+      margin-top:15px;
+      padding-bottom: 35px;
+     }
 
     .button {
       display: inline-block;
@@ -103,3 +120,9 @@ a {
   color:white;
 }
 
+#sampleForm label { display:block; margin-top:10px;}
+#sampleForm input[type="text"] { width:200px; border:solid 1px #000; padding:3px 0px;}
+#sampleForm img { vertical-align:middle; cursor:pointer; }
+
+.imageInputWrapper{ width:200px; border:solid 1px #000;  }
+#sampleForm input.inputWithImge { width:175px; border:none; margin-right:5px;}

@@ -39,13 +39,24 @@ bicycleApp.controller('CycleController', function($scope, sharedProperties) {
 
   // $("#originText").css("padding-top", "10px");
   // $("#destText").css("padding-top", "10px");
+  
+  
 
   var mapController = new MapController($scope);
   mapController.setUpMap();
   
   var journeyInputForm = new JourneyInputForm($scope);
-  journeyInputForm.initialize(); 
+  journeyInputForm.initialize();
   var bikeMapRouting = new BikeMapRouting($scope);
+  var bikeMapDrawing = new BikeMapDrawing($scope, bikeMapRouting);
+  
+  $scope.displayCurrentLocation = function(){
+    journeyInputForm.getCurrentLocation(getLocationCallback);
+  }
+
+  function getLocationCallback(geolocation){
+     bikeMapDrawing.drawCurrentLocation(geolocation);
+  }
   
   $scope.runSelectionProcess = function(origin, destination){
     bikeMapRouting.runSelectionProcess(origin, destination);  

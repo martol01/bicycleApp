@@ -7,6 +7,10 @@ function BikeMapDrawing(scope, bikeMapRouting) {
     var destinationPosition;
     var directionsDisplay;
 
+  this.drawCurrentLocation = function(geolocation){
+     icon = '../images/current.png';
+     displayPin(geolocation, icon);
+  }
 	function showRoute(origin, destination) {
 		
       console.log("SHOWING ROUTE FOR "+origin +"and "+destination);
@@ -29,12 +33,44 @@ function BikeMapDrawing(scope, bikeMapRouting) {
 	    // displayPin(destination);
     }
 
-
-    this.displayPin = function(destination) {
+    function getBackroundColour(amount){
+       if(amount < 0.1){
+          return "#A80000";
+       }
+       if(amount < 0.2){
+          return "#CC0000";
+       }
+       if(amount < 0.3){
+          return "#CC0033";
+       }
+       if(amount < 0.4){
+          return "#FF3333";
+       }
+       if(amount < 0.5){
+          return "#99CC00";
+       }
+       if(amount < 0.6){
+          return "#33CC00"; 
+       }
+       if(amount < 0.7){
+          return "#66CC33";
+       }
+       if(amount < 0.8){
+          return "#009900";
+       }
+       if(amount < 0.9){
+          return "#006600";
+       }
+       else{
+          return "#003300"
+       }     
+    }
+    
+    function displayPin(destination, icon) {
 
 	    var destMarker = new google.maps.Marker({
 	       position: destination,
-	       icon: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
+	       icon: icon,
 	       animation: google.maps.Animation.DROP,
 	       map: scope.map
 	    });
@@ -88,12 +124,27 @@ function BikeMapDrawing(scope, bikeMapRouting) {
 
   function displayInfoWindow(marker, bikestation) {
       var stepDisplay = new InfoBubble({hideCloseButton: true});
-      backgroundColor = 'rgb('+57 +','+57+','+57+')';
-      stepDisplay.setBackgroundColor(backgroundColor);
+      var predictBikeNum = bikestation.getPredictBikeNum();
+      console.log("PREDICT IS: "+predictBikeNum);
+      var totalBikeNum = bikestation.getBikeNumTotal();
+      //TO BE REMOVED
+      totalBikeNum = 40;
+      console.log("TOTAL IS: "+totalBikeNum);
+      if(totalBikeNum != 0){
+         //TO BE REMOVED
+         predictBikeNum = 28;
+         var percentage = predictBikeNum / totalBikeNum;
+         var backgroundColor = getBackroundColour(percentage);
+         stepDisplay.setBackgroundColor(backgroundColor);
+      }
+      else{
+        stepDisplay.setBackgroundColor("#575757"); 
+      }
+      
       stepDisplay.setMinWidth(110);
       stepDisplay.setMinHeight(60);
 
-      var predictBikeNum = bikestation.getPredictBikeNum();
+      
       var duration = bikestation.getDuration();
       
       var contentString = 

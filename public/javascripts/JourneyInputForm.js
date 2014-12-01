@@ -11,8 +11,8 @@ function JourneyInputForm(scope){
     };
 
 	this.initialize = function(){
-		var originText =(document.getElementById('originText')); //refer to the origin textbox
-		scope.map.controls[google.maps.ControlPosition.TOP_LEFT].push(originText);
+		var startForm =(document.getElementById('startForm')); //refer to the origin textbox
+		scope.map.controls[google.maps.ControlPosition.TOP_LEFT].push(startForm);
 	    var destinationText = (document.getElementById('destText')); //refer to the destination textbox
 	    scope.map.controls[google.maps.ControlPosition.TOP_LEFT].push(destinationText);
 	    var button = document.getElementById('btnShow');
@@ -37,13 +37,14 @@ function JourneyInputForm(scope){
 		});
 	}
 	
-	this.getCurrentLocation = function(){
+	this.getCurrentLocation = function(callback){
 		if (navigator.geolocation) {
 			navigator.geolocation.getCurrentPosition(function(position) {
 				var geolocation = new google.maps.LatLng(
 					position.coords.latitude, position.coords.longitude);
 				var defaultBounds = new google.maps.LatLngBounds(geolocation,
 					geolocation);
+				callback(geolocation);
 			});
 		}
 	}
