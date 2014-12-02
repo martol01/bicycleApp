@@ -4,6 +4,16 @@
 	<nav class="navbar navbar-default" role="navigation">
 	  <div class="container-fluid">
  -->
+     <div id="loadbox"><p>Loading</p></div>
+    <div id="appsplash" >
+    <div id="splashinfo">
+    <img id="splashimg" src="images/logo_motive.png" width="500"/><br/>
+        
+    <p>A short yet very inspiring explanation of the application.</p>    
+    <br/>    
+    <div id="splashbtn" ng-click="hideSplash()"><p>Plan Journey ➣</p></div>
+    </div>
+    </div>
 
 	<div>
 
@@ -16,13 +26,13 @@
 	 
 	  <paper-toast id="toast" class="capsule" text="Choose starting bike station!" style="padding-right: 60px;">
 	  </paper-toast>
-
+        
 	  <div id="startInput">  	
 	  	  <!-- <paper-input id="originText" label="Choose starting point..."> 
 		  </paper-input>
 		  <img id="cur_location_img" src="../images/location.png" ng-click="displayCurrentLocation()" /> -->
 	  </div>
-	  
+	 
 	  <div>
 	 	  <paper-input id ="destText" label="Choose destination..."> 
 		  </paper-input>

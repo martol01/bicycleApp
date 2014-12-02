@@ -59,6 +59,21 @@ bicycleApp.controller('CycleController', function($scope, sharedProperties) {
   $scope.runSelectionProcess = function(origin, destination){
     bikeMapRouting.runSelectionProcess(origin, destination);  
   }
+  
+  $scope.hideloading = function(){
+      angular.element(document.querySelector('#loadbox')).removeClass("appear");
+      angular.element(document.querySelector('#loadbox')).addClass("fade");
+  }
+  
+  $scope.showloading = function(){
+      angular.element(document.querySelector('#loadbox')).removeClass("fade");
+      angular.element(document.querySelector('#loadbox')).addClass("appear");
+  }
+  
+  $scope.hideSplash = function(){
+      angular.element(document.querySelector('#appsplash')).addClass("gone");
+      
+  }
 
 });
 
