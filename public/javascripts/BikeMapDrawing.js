@@ -127,31 +127,34 @@ function BikeMapDrawing(scope, bikeMapRouting) {
       var predictBikeNum = bikestation.getPredictBikeNum();
       console.log("PREDICT IS: "+predictBikeNum);
       var totalBikeNum = bikestation.getBikeNumTotal();
-      //TO BE REMOVED
-      totalBikeNum = 25;
-      console.log("TOTAL IS: "+totalBikeNum);
-      if(totalBikeNum != 0){
-         //TO BE REMOVED
-         // predictBikeNum = 4;
-         var percentage = predictBikeNum / totalBikeNum;
-         var backgroundColor = getBackroundColour(percentage);
-         stepDisplay.setBackgroundColor(backgroundColor);
-      }
-      else{
-        stepDisplay.setBackgroundColor("#575757"); 
-      }
-      
       stepDisplay.setMinWidth(110);
       stepDisplay.setMinHeight(60);
 
       
-      var duration = bikestation.getDuration();
+      var duration = bikestation.getDurationText();
+      var type = bikestation.getIsStart();
+      var typeValue="";
+      var percentage = 0;
+      var backgroundColor="";
+      if(type){
+         typeValue = "Bikes";
+         percentage = predictBikeNum / totalBikeNum;
+         backgroundColor = getBackroundColour(percentage);
+         console.log("THE TOTAL NUMBER OF BIKES FROT THE STATION: "+totalBikeNum);
+      } else{
+         typeValue = "Racks";
+         console.log("THE TOTAL NUMBER OF BIKES FROT THE STATION: "+totalBikeNum);
+         predictBikeNum = totalBikeNum - predictBikeNum;
+         percentage = predictBikeNum / totalBikeNum;
+         backgroundColor = getBackroundColour(percentage);
+      }
+      stepDisplay.setBackgroundColor(backgroundColor);
       
       var contentString = 
       '<div id="content" style="width:90px;">'+
       '<div id="pin_content">'+
       '<img src="../images/bicycle_sport.png" id="bike_image" alt="bicycle_icon">'+
-      '<div id="racks_text">Racks: '+ predictBikeNum +'</div>'+
+      '<div id="racks_text">'+typeValue+': '+ predictBikeNum +'</div>'+
       '</div>'+
       '<div id="minutes_text">'+ duration +'</div>'
       '</div>';

@@ -52,6 +52,9 @@ function BikeMapRouting(scope) {
         bikeStationFinder.getClosestStations(globalDestination, 3, function(destinationStationsArray) {
           // console.log("destinationStationsArray.length="+destinationStationsArray.length);
             var populatedStationArray = populatingStationArray(globalOrigin, destinationStationsArray, function(stationArray) {
+                for(var i=0;i<stationArray.length;i++){
+                  stationArray[i].setIsStart(false);
+                }
                 bikeMapDrawing.displayMarkers(stationArray, false);
             });
         });
@@ -60,7 +63,13 @@ function BikeMapRouting(scope) {
       
   }
 
+  // function (duration){
+  //   //return minutes
+  //   if(duration.indexOf("h")>-1){
 
+  //   }
+
+  // }
 
 
   function populatingStationArray(startingLocation, stationArray, callback) {
@@ -73,18 +82,20 @@ function BikeMapRouting(scope) {
       var station = stationArray[i];
       var stationGeoPoint = station.getGeoPoint();
       console.log("calculateDistances");
-      calculateDistances(startingLocation, stationGeoPoint, function(distance, duration) {
+      calculateDistances(startingLocation, stationGeoPoint, function(distance, durationValue, durationText ) {
 
           // console.log("duration = " + duration);
           stationArray[calculateNum].setDistance(distance);
-          stationArray[calculateNum].setDuration(duration);
+          stationArray[calculateNum].setDuration(durationValue);
+          stationArray[calculateNum].setDurationText(durationText);
 
-          var stationId = stationArray[calculateNum].getId();
+          var stationObject = stationArray[calculateNum];
+          // var stationId = stationArray[calculateNum].getId();
           var currentTimeSeconds = new Date().getTime() / 1000;          
           
-          console.log("bike json is="+bikeNumPredictionFactory.json);
-
-          bikeNumPredictionFactory.calculatePrediction(stationId, currentTimeSeconds + duration, function(predictionNumber) {
+          //console.log("bike json is="+bikeeNumPredictionFactory.json);
+          //console.log("THE FUNCITON DURATION NE WIS  D "+ duration);
+          bikeNumPredictionFactory.calculatePrediction(stationObject, durationValue, function(predictionNumber) {
               stationArray[callbackIteration].setBikeNumPrediction(predictionNumber); 
               if (predictionNumber>5) {
                 stationArray[callbackIteration].setDiscount(true);
@@ -133,12 +144,15 @@ function BikeMapRouting(scope) {
        			for (var j = 0; j < results.length; j++) {
        				var element = results[j];
        				var distance = element.distance.text;
-       				var duration = element.duration.text;
+       				var durationValue = element.duration.value;
+              var durationText = element.duration.text;
+
+
        				var from = origins[i];
        				var to = destinations[j];
        				// console.log("Distance from "+from +" to "+to+"is: " +distance);
        				// console.log("Duration for the journey from "+from +" to "+to+" is: " +duration);
-              respondCallback(distance, duration);
+              respondCallback(distance, durationValue, durationText);
        			}
        		}
        	}

@@ -1,25 +1,30 @@
 function BikeNumPredictionFactory() {
 
 	// Kapil's
-	var statioRatioUrl = "http://comp3001t4.cloudapp.net/COMP3001Prediction/?time=";//+time
+	var statioRatioUrl = "http://comp3001t4.cloudapp.net/COMP3001Prediction/?time=";
 
-	this.calculatePrediction = function(stationId, time, callback) {
+	
+	this.calculatePrediction = function(station, time, callback) {
+		var stationId = station.getId();
 		var startTime = Date.now();
-
+        console.log("TIME IN THE FUCNT"+time);
 		var json = getBikeNumJson(function(json) {
 			var jsonTime = Date.now();
 			console.log("got json "+(jsonTime-startTime));
 
-			var currentBikesNum = getCurBikeNum(stationId, json, function(curBikesNum) {
+			var currentBikesNum = getCurBikeNum(stationId, json, function(predictedBikesNum, emptyDocks, totalNumDocks) {
 				var bikeTime = Date.now();
 				console.log("got cur bike num"+(bikeTime-startTime));
-
+				station.setBikeRacksNum(emptyDocks);
+				station.setBikeNumTotal(totalNumDocks);
+				station.setBikeNumPrediction(predictedBikesNum);
 				var ratio = getRatio(stationId, time, function(ratio) {
 					var ratioTime = Date.now();
+					console.log("RATIO IS: "+ratio);
 					console.log("got ratio "+(ratioTime-startTime));
 
 					// #TODO: the formula is incorrect, but good for now
-					var predictedNumber = parseFloat(ratio) * parseFloat(curBikesNum);
+					var predictedNumber = parseFloat(ratio) * parseFloat(predictedBikesNum);
 					
 					callback(parseInt(predictedNumber, 10));
 				});
@@ -48,10 +53,13 @@ function BikeNumPredictionFactory() {
 	 	callback(jQuery.parseJSON(stringJson));
 	}
 
+	// "nbBikes":"5",
+    // "nbEmptyDocks":"13",
+ 	// "nbDocks":"19"
 	function getCurBikeNum(stationId, json, callback) {
 		$.each(json, function(key, data) {
 	    		if (data.station === stationId) {
-	    			callback(data.nbBikes);
+	    			callback(data.nbBikes, data.nbEmptyDocks, data.nbDocks);
 	    			return false;
 	    		}
 		});
