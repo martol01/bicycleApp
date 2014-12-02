@@ -61,18 +61,17 @@ bicycleApp.controller('CycleController', function($scope, sharedProperties) {
   }
   
   $scope.hideloading = function(){
-      angular.element(document.querySelector('#loadbox')).removeClass("appear")
-      console.log(angular.element(document.querySelector('#loadbox')).addClass("fade"));
+      angular.element(document.querySelector('#loadbox')).removeClass("appear");
+      angular.element(document.querySelector('#loadbox')).addClass("fade");
   }
   
   $scope.showloading = function(){
-      angular.element(document.querySelector('#loadbox')).removeClass("fade")
-      console.log(angular.element(document.querySelector('#loadbox')).addClass("appear"));
+      angular.element(document.querySelector('#loadbox')).removeClass("fade");
+      angular.element(document.querySelector('#loadbox')).addClass("appear");
   }
   
   $scope.hideSplash = function(){
-      console.log("hall");
-      console.log(angular.element(document.querySelector('#appsplash')).addClass("gone"));
+      angular.element(document.querySelector('#appsplash')).addClass("gone");
       
   }
 
