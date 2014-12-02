@@ -74,7 +74,6 @@ bicycleApp.controller('CycleController', function($scope, sharedProperties) {
       console.log("hall");
       console.log(angular.element(document.querySelector('#appsplash')).addClass("gone"));
       
-      //TweenMax.to($("$appsplash"), 1, {opacity: 0});
   }
 
 });

@@ -48,7 +48,7 @@ function JourneyInputForm(scope){
      bikeMapDrawing.drawCurrentLocation(geolocation);
      var origin = document.getElementById("originText");
      scope.origin = geolocation;
-    scope.map.panTo(geolocation);
+     scope.map.panTo(geolocation);
      origin.value = 'My location'
   }
     function initializeAutoComplete(originText, destinationText){
