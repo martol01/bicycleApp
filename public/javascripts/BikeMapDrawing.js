@@ -109,6 +109,8 @@ function BikeMapDrawing(scope, bikeMapRouting) {
         	}
            
       }
+        
+    scope.hideloading();
   }
 
   function getIcon(isStart) {

@@ -123,3 +123,165 @@ a {
 
 .imageInputWrapper{ width:200px; border:solid 1px #000;  }
 #sampleForm input.inputWithImge { width:175px; border:none; margin-right:5px;}
+
+#loadbox{
+    top: 40%;
+    left:37%;
+    position: absolute;
+    width: 140px;
+    height: 60px;
+    border-radius: 10px;
+    background: RGBA(0, 173, 240, 1);
+    background-size: cover;
+    transition: 1.5s;
+    -webkit-transition-timing-function: ease-out; /* Safari and Chrome */
+    transition-timing-function: ease-out;
+    opacity: 0.0;
+    text-align: center;
+}
+
+#loadbox p{
+    padding-top: 10px;
+        font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+    font-size: 30px;
+    opacity: 0.8;
+    color: white;
+    font-weight: bolder;
+    
+}
+
+#loadbox.fade{
+    opacity: 0.0;
+}
+
+#loadbox.appear{
+
+    opacity: 1.0;
+    
+}
+
+#splashbtn{
+    display: inline-block;
+    margin-top: 30px;
+    width: 300px;
+    height: 55px;
+    border-width: 2px;
+    border-color: #fff;
+    border-style: solid;
+    border-radius: 6px;
+    background-color: RGBA(0, 173, 240, 0.4);
+    
+}
+
+#splashbtn p{
+    position: relative;
+    font-size: 25px;
+    color: white;
+    top: -20px;
+    font-weight: lighter;
+    text-shadow: 0px 0px 2px rgba(150, 150, 150, 1);
+}
+
+#appsplash{ 
+    position: absolute; 
+    width: 100%; 
+    height: 100%; 
+    max-height: 100%;
+    
+background: -moz-radial-gradient(center, ellipse cover,  rgba(136,215,239,0.8) 0%, rgba(5,171,224,0.85) 100%); /* FF3.6+ */
+background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,rgba(136,215,239,0.8)), color-stop(100%,rgba(5,171,224,0.85))); /* Chrome,Safari4+ */
+background: -webkit-radial-gradient(center, ellipse cover,  rgba(136,215,239,0.8) 0%,rgba(5,171,224,0.85) 100%); /* Chrome10+,Safari5.1+ */
+background: -o-radial-gradient(center, ellipse cover,  rgba(136,215,239,0.8) 0%,rgba(5,171,224,0.85) 100%); /* Opera 12+ */
+background: -ms-radial-gradient(center, ellipse cover,  rgba(136,215,239,0.8) 0%,rgba(5,171,224,0.85) 100%); /* IE10+ */
+background: radial-gradient(ellipse at center,  rgba(136,215,239,0.8) 0%,rgba(5,171,224,0.85) 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cc88d7ef', endColorstr='#d905abe0',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+
+
+    
+    
+   
+    top:0px;
+    opacity: 1.0;
+    transition: 0.2s;
+    -webkit-transition-timing-function: ease-out; /* Safari and Chrome */
+    transition-timing-function: ease-out;
+}
+
+.gone{
+    top: -100% !important;
+}
+
+#splashinfo{
+    width: 100%;
+    height: 100%;
+    position: relative;
+    text-align: center;
+    
+}
+
+#splashinfo p{
+    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+    font-size: 25px;
+    color: white;
+    margin-top: 30px;
+    font-weight: lighter;
+    text-shadow: 0px 0px 2px rgba(150, 150, 150, 1);
+    
+}
+
+#splashimg{
+    display: inline-block;
+    width: 50%;
+    margin-top: 10%;
+
+
+}
+
+
+
+/* switch to stacked controls for resolutions < 900px wide  */
+@media only screen 
+and (max-width : 900px) {
+/* Styles */
+    
+    #splashimg{
+        width: 90% !important;
+    }
+    
+
+    #btnShow{
+        position: absolute;
+        left: 15% !important;
+        margin-top: 130px;
+    }
+
+    
+    #map-canvas #destText{
+        position: absolute;
+        left: 15% !important;
+        top: 0px;
+        width: 350px;
+        max-width: 80%;
+        margin-top: 80px;
+        
+    }
+
+    #map-canvas #originText{
+        position: absolute;
+        left: 0px;
+        top: 0px;
+        max-width: 100%;
+    }
+    
+    #map-canvas #startInput{
+        position: absolute;
+        width: 80%;
+        height: 80px;
+        top: 20px !important;
+        left: 15% !important;
+        max-width: 80%;
+    }
+}
+
+
+

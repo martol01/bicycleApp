@@ -24,7 +24,7 @@ function JourneyInputForm(scope){
 
 
         var div1 = document.createElement('div');
-        div1.innerHTML = '<paper-input id="originText" style="margin-top:15px; margin-right: 10px;'+
+        div1.innerHTML = '<paper-input label="Choose origin..." id="originText" style="margin-top:15px; margin-right: 10px;'+
         ' padding-bottom: 35px;"></paper-input>';
         startInput.appendChild(div1);
 
@@ -48,6 +48,7 @@ function JourneyInputForm(scope){
      bikeMapDrawing.drawCurrentLocation(geolocation);
      var origin = document.getElementById("originText");
      scope.origin = geolocation;
+    scope.map.panTo(geolocation);
      origin.value = 'My location'
   }
     function initializeAutoComplete(originText, destinationText){
