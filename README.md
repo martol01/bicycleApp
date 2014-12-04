@@ -19,7 +19,7 @@ Here are some demos of the app:
 - Search boxes stack at lower screen width's ( http://i.imgur.com/G1973wH.gifv )
 - Loading animation when fetching station results from svr ( http://i.imgur.com/8Id9tyN.gifv )
 
-![Autocomplete input form](/https://raw.githubusercontent.com/martol01/bicycleApp/blob/master/inputForm.png)
+![Autocomplete input form](https://raw.githubusercontent.com/martol01/bicycleApp/blob/master/inputForm.png)
 
 
 
