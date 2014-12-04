@@ -9,8 +9,7 @@ function BikeMapRouting(scope) {
 
   	 globalDestination = destination;
      globalOrigin = origin;
-      scope.showloading();
-      console.log(scope);
+
      var bikeStationFinder = new BikeStationFinder();
      
      bikeMapDrawing.clearMap();
@@ -18,6 +17,7 @@ function BikeMapRouting(scope) {
      scope.map.setZoom(16);
 
      // chache latest curBikes Json to work further
+     // var startTime = Date.now();
      localStorage.removeItem("dataCache");
      bikeNumPredictionFactory = new BikeNumPredictionFactory();
      bikeNumPredictionFactory.cahceBikeNumJson(function() {
@@ -31,7 +31,6 @@ function BikeMapRouting(scope) {
           });
 
      });
-     
      // var cacheTime = Date.now();
      // console.log("dataCached "+(cacheTime-startTime));
      
@@ -41,8 +40,7 @@ function BikeMapRouting(scope) {
 
 
   this.startDrawingDestStations = function() {
-      
-      scope.showloading();
+
       scope.map.setZoom(16);
 
       var bikeStationFinder = new BikeStationFinder();
@@ -52,6 +50,7 @@ function BikeMapRouting(scope) {
       bikeNumPredictionFactory.cahceBikeNumJson(function() {
 
         bikeStationFinder.getClosestStations(globalDestination, 3, function(destinationStationsArray) {
+          // console.log("destinationStationsArray.length="+destinationStationsArray.length);
             var populatedStationArray = populatingStationArray(globalOrigin, destinationStationsArray, function(stationArray) {
                 for(var i=0;i<stationArray.length;i++){
                   stationArray[i].setIsStart(false);
@@ -59,27 +58,43 @@ function BikeMapRouting(scope) {
                 bikeMapDrawing.displayMarkers(stationArray, false);
             });
         });
+
       });
+      
   }
+
+  // function (duration){
+  //   //return minutes
+  //   if(duration.indexOf("h")>-1){
+
+  //   }
+
+  // }
+
 
   function populatingStationArray(startingLocation, stationArray, callback) {
 
    var callbackIteration = 0;
    var calculateNum = 0;
-    
+    // console.log("going to animate "+stationArray.length);
+
     for (var i = 0; i<stationArray.length; i++) {
       var station = stationArray[i];
       var stationGeoPoint = station.getGeoPoint();
       console.log("calculateDistances");
       calculateDistances(startingLocation, stationGeoPoint, function(distance, durationValue, durationText ) {
 
+          // console.log("duration = " + duration);
           stationArray[calculateNum].setDistance(distance);
           stationArray[calculateNum].setDuration(durationValue);
           stationArray[calculateNum].setDurationText(durationText);
 
           var stationObject = stationArray[calculateNum];
+          // var stationId = stationArray[calculateNum].getId();
           var currentTimeSeconds = new Date().getTime() / 1000;          
           
+          //console.log("bike json is="+bikeeNumPredictionFactory.json);
+          //console.log("THE FUNCITON DURATION NE WIS  D "+ duration);
           bikeNumPredictionFactory.calculatePrediction(stationObject, durationValue, function(predictionNumber) {
               stationArray[callbackIteration].setBikeNumPrediction(predictionNumber); 
               if (predictionNumber>5) {
@@ -87,6 +102,8 @@ function BikeMapRouting(scope) {
               } else {
                 stationArray[callbackIteration].setDiscount(false);
               }
+
+              // console.log("populatingStationArray return predictionNumber="+predictionNumber);
               if (callbackIteration===stationArray.length-1) {
                 callback(stationArray);
               }
@@ -102,6 +119,9 @@ function BikeMapRouting(scope) {
 
      
   function calculateDistances(origin, destination, respondCallback) {
+
+      // dest1 = new google.maps.LatLng(51.5125477,-0.1156322);
+      // showRoute(scope.origin, scope.destination);
 
       var service = new google.maps.DistanceMatrixService();
      //DistanceMatrix gives data for each pair (origin:destination) 
@@ -126,9 +146,13 @@ function BikeMapRouting(scope) {
        				var distance = element.distance.text;
        				var durationValue = element.duration.value;
               var durationText = element.duration.text;
+
+
        				var from = origins[i];
        				var to = destinations[j];
-       			  respondCallback(distance, durationValue, durationText);
+       				// console.log("Distance from "+from +" to "+to+"is: " +distance);
+       				// console.log("Duration for the journey from "+from +" to "+to+" is: " +duration);
+              respondCallback(distance, durationValue, durationText);
        			}
        		}
        	}

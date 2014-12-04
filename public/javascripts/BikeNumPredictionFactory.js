@@ -3,6 +3,8 @@ function BikeNumPredictionFactory() {
 	// Kapil's
 	var statioRatioUrl = "http://comp3001t4.cloudapp.net/COMP3001Prediction/?time=";
 
+	//140&stationid=7
+
 	
 	this.calculatePrediction = function(station, time, callback) {
 		var stationId = station.getId();
@@ -12,21 +14,31 @@ function BikeNumPredictionFactory() {
 			var jsonTime = Date.now();
 			console.log("got json "+(jsonTime-startTime));
 
-			var currentBikesNum = getCurBikeNum(stationId, json, function(predictedBikesNum, emptyDocks, totalNumDocks) {
+			var currentBikesNum = getCurBikeNum(stationId, json, function(curBikesNum, emptyDocks, totalNumDocks) {
 				var bikeTime = Date.now();
 				console.log("got cur bike num"+(bikeTime-startTime));
 				station.setBikeRacksNum(emptyDocks);
 				station.setBikeNumTotal(totalNumDocks);
-				station.setBikeNumPrediction(predictedBikesNum);
-				var ratio = getRatio(stationId, time, function(ratio) {
+				// station.setBikeRacksNum();
+				// station.setBikeNumPrediction(predictedBikesNum);
+				var ratio = getRatio(stationId, time, function(incomingRatio, outgoingRatio) {
 					var ratioTime = Date.now();
-					console.log("RATIO IS: "+ratio);
-					console.log("got ratio "+(ratioTime-startTime));
+					// console.log("RATIO IS: "+ratio);
+					// console.log("curBikesNum="+curBikesNum+" incomingRatio="+incomingRatio+" outgoingRatio="+outgoingRatio+" time="+time);
 
 					// #TODO: the formula is incorrect, but good for now
-					var predictedNumber = parseFloat(ratio) * parseFloat(predictedBikesNum);
+					// time in seconds
+					// prediction per 15 minutes
+					var timeProportionality = 15*60;
+					var incomingBikesPrediction = parseFloat(incomingRatio) * time / timeProportionality; 
+					var outgoingBikesPrediction = parseFloat(outgoingRatio) * time / timeProportionality;
+					// console.log("curBikesNum="+curBikesNum+"+incomingBikesPrediction="+incomingBikesPrediction+"-outgoingBikesPrediction="+outgoingBikesPrediction);
+
+					var predictedNumber = parseInt(curBikesNum) + parseInt(incomingBikesPrediction) - parseInt(outgoingBikesPrediction);
+					// console.log("incomingBikesPrediction="+incomingBikesPrediction+" outgoingBikesPrediction="+outgoingBikesPrediction+" predictedNumber="+predictedNumber);
+					console.log("curBikesNum="+curBikesNum+" predictedNumber="+predictedNumber);
 					
-					callback(parseInt(predictedNumber, 10));
+					callback(parseInt(predictedNumber));
 				});
 			});
 		});	
@@ -67,18 +79,22 @@ function BikeNumPredictionFactory() {
 
 
 	function getRatio(stationId, time, callback) {
-		var url = statioRatioUrl + time;
-		requestRatio(url, function(ratio) {
-			callback(ratio);
+		var url = statioRatioUrl + time + "&stationid=" + stationId;
+		requestRatio(url, function(incomingRatio, outgoingRatio) {
+			callback(incomingRatio, outgoingRatio);
 		});		
 	}
 
+	// incoming, outgoing
+	// 0.390977443609,0.466165413534 per 15 minutes
 	function requestRatio(url, callback) {
 	    var xmlHttp = null;
 	    xmlHttp = new XMLHttpRequest();
 	    xmlHttp.open("GET", url, false);
 	    xmlHttp.send(null);
-	    callback(xmlHttp.responseText);
+	    console.log("xmlHttp.responseText = "+xmlHttp.responseText);
+	    var ratios = xmlHttp.responseText.split(",");
+	    callback(ratios[0], ratios[1]); // incoming, outgoing
 	}
 
 	function httpGet(url, paramlist) {

@@ -31,12 +31,15 @@ function BikeMapRouting(scope) {
           });
 
      });
-     
+<<<<<<< Updated upstream
+      
      // var cacheTime = Date.now();
      // console.log("dataCached "+(cacheTime-startTime));
      
      // getting stations arrays through callback
 
+=======
+>>>>>>> Stashed changes
   }
 
 

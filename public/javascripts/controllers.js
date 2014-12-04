@@ -37,11 +37,6 @@ bicycleApp.controller('RouteController', function($scope, sharedProperties) {
 
 bicycleApp.controller('CycleController', function($scope, sharedProperties) {
 
-  // $("#originText").css("padding-top", "10px");
-  // $("#destText").css("padding-top", "10px");
-  
-  
-
   var mapController = new MapController($scope);
   mapController.setUpMap();
   

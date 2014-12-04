@@ -9,8 +9,7 @@ function BikeMapRouting(scope) {
 
   	 globalDestination = destination;
      globalOrigin = origin;
-      scope.showloading();
-      console.log(scope);
+
      var bikeStationFinder = new BikeStationFinder();
      
      bikeMapDrawing.clearMap();
@@ -31,18 +30,11 @@ function BikeMapRouting(scope) {
           });
 
      });
-     
-     // var cacheTime = Date.now();
-     // console.log("dataCached "+(cacheTime-startTime));
-     
-     // getting stations arrays through callback
-
   }
 
 
   this.startDrawingDestStations = function() {
-      
-      scope.showloading();
+
       scope.map.setZoom(16);
 
       var bikeStationFinder = new BikeStationFinder();

@@ -77,6 +77,14 @@ function BikeMapDrawing(scope, bikeMapRouting) {
 	    // displayInfoWindow(destMarker);
     }
 
+  function displayPin(destination, icon) {
+    var destMarker = new google.maps.Marker({
+      position: destination,
+      icon: icon,
+      animation: google.maps.Animation.DROP,
+      map: scope.map
+    });
+  }
 
 
     this.displayMarkers = function(bikestations, isStart) {
@@ -197,8 +205,7 @@ function BikeMapDrawing(scope, bikeMapRouting) {
     destinationMarkers.splice(0, destinationMarkers.length);
     if(directionsDisplay){
       directionsDisplay.setMap(null);  
-    }
-    
+    }   
   }
   function deleteStartPinsCallback() {
       var len = startMarkers.length;
