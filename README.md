@@ -18,8 +18,14 @@ Here are some demos of the app:
 - Responsive splash page ( http://i.imgur.com/yN3r3SZ.gifv & http://i.imgur.com/ZxTTP4y.gifv )
 - Search boxes stack at lower screen width's ( http://i.imgur.com/G1973wH.gifv )
 - Loading animation when fetching station results from svr ( http://i.imgur.com/8Id9tyN.gifv )
+- Autocomplete input form ![Autocomplete input form](https://raw.githubusercontent.com/martol01/bicycleApp/master/inputForm.png)
+- Starting stations shows number of free bikes ![Autocomplete input form](https://raw.githubusercontent.com/martol01/bicycleApp/master/startingStations.png)
+- Ending stations shows number of free bikes ![Autocomplete input form](https://raw.githubusercontent.com/martol01/bicycleApp/master/destinationStations.png)
+- Best chosen route ![Autocomplete input form](https://raw.githubusercontent.com/martol01/bicycleApp/master/path.png)
 
-![Autocomplete input form](https://raw.githubusercontent.com/martol01/bicycleApp/blob/master/inputForm.png)
+
+
+
 
 
 
