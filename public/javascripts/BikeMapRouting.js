@@ -31,11 +31,6 @@ function BikeMapRouting(scope) {
           });
 
      });
-     
-     // var cacheTime = Date.now();
-     // console.log("dataCached "+(cacheTime-startTime));
-     
-     // getting stations arrays through callback
 
   }
 

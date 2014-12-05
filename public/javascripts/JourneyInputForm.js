@@ -18,10 +18,7 @@ function JourneyInputForm(scope){
         div.innerHTML = '<img id="cur_location_img" style="position:absolute;z-index: 1; margin-top: 7px; left:330px; top:20px;"'+
         ' src="../images/location.png" onclick="displayCurrentLocation();"/>';
 
-        // div.innerHTML = '<paper-button class="button raised" style="position:absolute;z-index: 99; margin-top: 7px; left:130px; top:20px;" iconsrc="http://i.stack.imgur.com/orZ4x.png" ></paper-button>';
-
-        startInput.appendChild(div)
-
+        startInput.appendChild(div);
 
         var div1 = document.createElement('div');
         div1.innerHTML = '<paper-input label="Choose origin..." id="originText" style="margin-top:15px; margin-right: 10px;'+

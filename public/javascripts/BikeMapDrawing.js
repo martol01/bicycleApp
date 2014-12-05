@@ -29,8 +29,6 @@ function BikeMapDrawing(scope, bikeMapRouting) {
 	        directionsDisplay.setDirections(response);
 	      }
 	    });
-
-	    // displayPin(destination);
     }
 
     function getBackroundColour(amount){
