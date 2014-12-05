@@ -22,7 +22,7 @@ Here are some demos of the app:
 
 ![Autocomplete input form](https://raw.githubusercontent.com/martol01/bicycleApp/master/inputForm.png)
 - Starting stations shows number of free bikes ![Autocomplete input form](https://raw.githubusercontent.com/martol01/bicycleApp/master/startingStations.png)
-- Ending stations shows number of free bikes ![Autocomplete input form](https://raw.githubusercontent.com/martol01/bicycleApp/master/destinationStations.png)
+- Ending stations shows number of free racks ![Autocomplete input form](https://raw.githubusercontent.com/martol01/bicycleApp/master/destinationStations.png)
 - Best chosen route ![Autocomplete input form](https://raw.githubusercontent.com/martol01/bicycleApp/master/path.png)
 
 
